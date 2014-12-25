@@ -45,7 +45,7 @@ ofEvent<InputGestureTuio112D::addTuioBlob2DArgs> InputGestureTuio112D::addTuioBl
 ofEvent<InputGestureTuio112D::updateTuioBlob2DArgs> InputGestureTuio112D::updateTuioBlob2D;
 ofEvent<InputGestureTuio112D::removeTuioBlob2DArgs> InputGestureTuio112D::removeTuioBlob2D;
 
-void InputGestureTuio112D::ReceiveCall(InputGestureOSC::EventNewOScMessageArgs & args)
+void InputGestureTuio112D::ReceiveCall(OscInput::EventNewOscMessageArgs & args)
 {
     std::string addr = args.m.getAddress();
     OscOptionalUnpacker uargs(args.m);

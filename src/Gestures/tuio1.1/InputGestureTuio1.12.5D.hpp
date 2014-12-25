@@ -35,7 +35,7 @@
 
 
 #include <set>
-#include "InputGestureOsc.hpp"
+#include "OscInput.hpp"
 #include "OscTools.hpp"
 #include "InputGestureTuio1.12D.hpp"
 
@@ -81,13 +81,13 @@ class InputGestureTuio1125D{
 
     InputGestureTuio1125D()
     {
-        ofAddListener(InputGestureOSC::Instance().EventNewOScMessage,this,&InputGestureTuio1125D::ReceiveCall);
+        ofAddListener(OscInput::EventNewOscMessage,this,&InputGestureTuio1125D::ReceiveCall);
     }
     virtual ~InputGestureTuio1125D()
     {
-        ofRemoveListener(InputGestureOSC::Instance().EventNewOScMessage,this,&InputGestureTuio1125D::ReceiveCall);
+        ofRemoveListener(OscInput::EventNewOscMessage,this,&InputGestureTuio1125D::ReceiveCall);
     }
-    void ReceiveCall(InputGestureOSC::EventNewOScMessageArgs & args);
+    void ReceiveCall(OscInput::EventNewOscMessageArgs & args);
     void tuio25Dcur(OscOptionalUnpacker & argList);
     void tuio25Dobj(OscOptionalUnpacker & argList);
     void tuio25Dblb(OscOptionalUnpacker & argList);

@@ -36,7 +36,7 @@
 #include <set>
 
 #include "ofxGlobalConfig.hpp"
-#include "InputGestureOsc.hpp"
+#include "OscInput.hpp"
 #include "OscTools.hpp"
 
 
@@ -107,13 +107,13 @@ public:
         limitroundarea(ofxGlobalConfig::getRef("GLOBAL:LIMITFINGERSOUTSIDECIRCLE",1)),
         limitroundareaobj(ofxGlobalConfig::getRef("GLOBAL:LIMITOBJECTSOUTSIDECIRCLE",1))
     {
-        ofAddListener(InputGestureOSC::Instance().EventNewOScMessage,this,&InputGestureTuio112D::ReceiveCall);
+        ofAddListener(OscInput::EventNewOscMessage,this,&InputGestureTuio112D::ReceiveCall);
     }
     virtual ~InputGestureTuio112D()
     {
-        ofRemoveListener(InputGestureOSC::Instance().EventNewOScMessage,this,&InputGestureTuio112D::ReceiveCall);
+        ofRemoveListener(OscInput::EventNewOscMessage,this,&InputGestureTuio112D::ReceiveCall);
     }
-    void ReceiveCall(InputGestureOSC::EventNewOScMessageArgs & args);
+    void ReceiveCall(OscInput::EventNewOscMessageArgs & args);
     void tuio2Dcur(OscOptionalUnpacker & argList);
     void tuio2Dobj(OscOptionalUnpacker & argList);
     void tuio2Dblb(OscOptionalUnpacker & argList);

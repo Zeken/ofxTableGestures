@@ -35,7 +35,7 @@
 
 
 #include <set>
-#include "InputGestureOsc.hpp"
+#include "OscInput.hpp"
 #include "OscTools.hpp"
 #include "InputGestureTuio1.12.5D.hpp"
 
@@ -67,13 +67,13 @@ class InputGestureTuio113D{
 
         InputGestureTuio113D()
         {
-            ofAddListener(InputGestureOSC::Instance().EventNewOScMessage,this,&InputGestureTuio113D::ReceiveCall);
+            ofAddListener(OscInput::EventNewOscMessage,this,&InputGestureTuio113D::ReceiveCall);
         }
         virtual ~InputGestureTuio113D()
         {
-            ofRemoveListener(InputGestureOSC::Instance().EventNewOScMessage,this,&InputGestureTuio113D::ReceiveCall);
+            ofRemoveListener(OscInput::EventNewOscMessage,this,&InputGestureTuio113D::ReceiveCall);
         }
-        void ReceiveCall(InputGestureOSC::EventNewOScMessageArgs & args);
+        void ReceiveCall(OscInput::EventNewOscMessageArgs & args);
         void tuio3Dcur(OscOptionalUnpacker & argList);
         void tuio3Dobj(OscOptionalUnpacker & argList);
 

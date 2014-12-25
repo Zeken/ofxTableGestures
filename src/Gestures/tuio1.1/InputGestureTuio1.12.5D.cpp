@@ -44,7 +44,7 @@ ofEvent<InputGestureTuio1125D::addTuioBlob25DArgs> InputGestureTuio1125D::addTui
 ofEvent<InputGestureTuio1125D::updateTuioBlob25DArgs> InputGestureTuio1125D::updateTuioBlob25D;
 ofEvent<InputGestureTuio1125D::removeTuioBlob25DArgs> InputGestureTuio1125D::removeTuioBlob25D;
 
-void InputGestureTuio1125D::ReceiveCall(InputGestureOSC::EventNewOScMessageArgs & args)
+void InputGestureTuio1125D::ReceiveCall(OscInput::EventNewOscMessageArgs & args)
 {
     std::string addr = args.m.getAddress();
     OscOptionalUnpacker uargs(args.m);
