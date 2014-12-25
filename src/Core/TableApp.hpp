@@ -59,6 +59,10 @@ class TableApp {
     private:
         GenericManager genericManager;
         OscInput oscInput;
+
+        ///Global matrix
+        ofMatrix4x4 matrix;
+
         ///Renderer: used for distortionate the graphic output.
         Renderer *renderer;
         ///Grid: used for drawing the calibration grid on the screen.
@@ -86,7 +90,6 @@ class TableApp {
             ///cursor status before enable simulator.
             bool was_cursor_hide;
         #endif
-//        static double* calibration_matrix;
         int & squaredInterface;
 
         ///Flag to recalculate the ignore collision matrix.
@@ -95,6 +98,10 @@ class TableApp {
         std::string win_name;
         //Cursor key evaluation
         void Evaluate_Cursor(int key);
+
+	///Update global matrix
+	void updateMatrix(const ofVec2f& winSize);
+
     public:
         ///Constructor, here is initialized all data
         ///and loaded distortion parameters from file.
@@ -110,7 +117,7 @@ class TableApp {
 
         ///returns the biggest side of the screen
         static int GetSquareSide();
-//        static double* GetTransformationMatrix(){return calibration_matrix;}
+
         ///Key funcs, they only repports the ones that are not used by the system
         virtual void KeyPressed  (int key){}
 		virtual void KeyReleased (int key){}

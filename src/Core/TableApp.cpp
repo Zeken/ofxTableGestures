@@ -49,13 +49,10 @@ float TableApp::width = 0;
 
 
 TableApp::TableApp(std::string name):
-    calibration_mode(0),
-    show_help(false),
-    show_info(false),
-    hide_cursor(true),
-    squaredInterface(ofxGlobalConfig::getRef("GLOBAL:SQUAREDINTERFACE",1)),
-    matrix_updated(false)
-{
+        calibration_mode(0),
+        show_help(false),
+        show_info(false),
+        hide_cursor(true){
     if(ofxGlobalConfig::getRef("GLOBAL:RENDERTOTEXTURE",0)) renderer = new Renderer_to_texture();
     else renderer = new Renderer_plane();
 
@@ -111,6 +108,7 @@ void TableApp::setup(){
     ofSetWindowTitle(win_name + "\t press 'h' to show help content");
     ofBackground(0, 0, 0);
     ofHideCursor();
+    updateMatrix(ofGetWindowSize());
 
     genericManager.initAll();
     GenericManager::get<GraphicDispatcher>()->createGraphic(grid, NOT_LAYER);
@@ -188,33 +186,8 @@ void TableApp::loadHelp(){
 
 void TableApp::draw(){
     ofPushMatrix();
-    #ifndef NO_SIMULATOR
-    if(is_simulating) ofScale(0.91f,0.91f,1.0f);
-    #endif
-
     renderer->Start();
-    ofPushMatrix();
-    int shortside = min(ofGetWidth(),ofGetHeight());
-    if(squaredInterface)
-    {
-        //if the surface is squared we center the drawing  plane
-        glTranslatef((ofGetWidth()-shortside)/2.0,(ofGetHeight()-shortside)/2.0,0);
-        TableApp::height = 1;
-        TableApp::width = 1;
-    }
-    else
-    {
-        TableApp::height = float(ofGetHeight())/float(shortside);
-        TableApp::width = float(ofGetWidth())/float(shortside);
-    }
-    glScalef(shortside,shortside,1);
-
-    if(!matrix_updated)
-    {
-        matrix_updated = true;
-        glGetDoublev(GL_MODELVIEW_MATRIX,Figures::CollisionHelper::ignore_transformation_matrix.data);
-        Figures::CollisionHelper::ignore_transformation_matrix = Figures::CollisionHelper::ignore_transformation_matrix.GetInverse();
-    }
+    ofMultMatrix(matrix);
     ///Draws all 'Graphics'
     glDisable(GL_DEPTH_TEST);
     ofPushMatrix();
@@ -404,11 +377,8 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
                     ofShowCursor();
                     simulator->run(true);
                 }
-                matrix_updated = false;
-            #endif
-        break;
-        case 'b':
-            Figures::CollisionHelper::debug_graphics = !Figures::CollisionHelper::debug_graphics;
+                updateMatrix(ofGetWindowSize());
+#endif
         break;
     }
 }
@@ -469,34 +439,55 @@ void TableApp::Evaluate_Cursor(int key)
 }
 //--------------------------------------------------------------
 void TableApp::windowResized(ofResizeEventArgs & event){
-    int w = event.width;
-    int h = event.height;
-    grid->Resize();
-    ///calls resize method of all 'Graphics' when nedded.
-    GraphicDispatcher::Instance().Resize(w,h);
-    matrix_updated = false;
+    ofVec2f winSize(event.width, event.height);
+    updateMatrix(winSize);
 }
 
 
 //--------------------------------------------------------------
 void TableApp::mouseDragged(ofMouseEventArgs & event){
-    #ifndef NO_SIMULATOR
-    if(is_simulating) simulator->mouseDragged(event.x,event.y,event.button);
-    #endif
+    ofVec3f mouse(event.x, event.y);
+    mouse = mouse * matrix.getInverse();
+
+#ifndef NO_SIMULATOR
+    simulator->mouseDragged(mouse.x, mouse.y, event.button);
+#endif
 }
 
 //--------------------------------------------------------------
 void TableApp::mousePressed(ofMouseEventArgs & event){
-    #ifndef NO_SIMULATOR
-    if(is_simulating) simulator->mousePressed(event.x,event.y,event.button);
-    #endif
+    ofVec3f mouse(event.x, event.y);
+    mouse = mouse * matrix.getInverse();
+
+#ifndef NO_SIMULATOR
+    simulator->mousePressed(mouse.x,mouse.y,event.button);
+#endif
 }
 
 //--------------------------------------------------------------
 void TableApp::mouseReleased(ofMouseEventArgs & event){
-    #ifndef NO_SIMULATOR
-    if(is_simulating) simulator->mouseReleased(event.x,event.y,event.button);
-    #endif
+    ofVec3f mouse(event.x, event.y);
+    mouse = mouse * matrix.getInverse();
+
+#ifndef NO_SIMULATOR
+    simulator->mouseReleased(mouse.x,mouse.y,event.button);
+#endif
 }
 
+//--------------------------------------------------------------
+void TableApp::updateMatrix(const ofVec2f& size){
+    matrix.makeIdentityMatrix();
+
+#ifndef NO_SIMULATOR
+    if(simulator->isRunning()){
+        matrix.scale(0.91f, 0.91f, 1.0f);
+    }
+#endif
+
+    int shortside = min(size.x, size.y);
+    matrix.scale(shortside, shortside, 1);
+    if(ofxGlobalConfig::getRef("GLOBAL:SQUAREDINTERFACE",1)){
+        matrix.setTranslation((size.x - shortside)/2.0f, (size.y - shortside)/2.0f, 0);
+    }
+}
 
