@@ -33,17 +33,17 @@
 #define INPUTGESTUREDIRECTFINGERS_H_INCLUDED
 
 
-#include "DirectPoint.hpp"
 #include "InputGestureBasicFingers.hpp"
 #include <map>
 
-
-class DirectFinger: public DirectPoint
-{
-public:
-    DirectFinger():DirectPoint(){}
-    int s_id;
-    float xspeed, yspeed, maccel;
+class DirectFinger : public ofVec3f{
+    public:
+        DirectFinger() : s_id(0), xspeed(0), yspeed(0), maccel(0) {}
+        bool operator ==(const DirectFinger& rhs) const{
+            return s_id == rhs.s_id;
+        }
+        int s_id;
+        float xspeed, yspeed, maccel;
 };
 
 

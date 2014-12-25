@@ -51,9 +51,8 @@ void InputGestureDirectObjects::addTuioObject(InputGestureBasicObjects::addTuioO
     DirectObject * dob = new DirectObject();
     dob->s_id = a.id;
     dob->f_id = a.f_id;
-    dob->setX( a.xpos);
-    dob->setY( a.ypos);
-    dob->angle = a.angle;
+    dob->set(a.xpos, a.ypos);
+    dob->orientation = a.angle;
     dob->xspeed = a.xspeed;
     dob->yspeed= a.yspeed;
     dob->rspeed = a.rspeed;
@@ -72,9 +71,8 @@ void InputGestureDirectObjects::enterTuioObject(InputGestureBasicObjects::enterT
     DirectObject * dob = objects[a.id];
     dob->s_id = a.id;
     dob->f_id = a.f_id;
-    dob->setX( a.xpos);
-    dob->setY( a.ypos);
-    dob->angle = a.angle;
+    dob->set(a.xpos, a.ypos);
+    dob->orientation = a.angle;
     dob->xspeed = a.xspeed;
     dob->yspeed= a.yspeed;
     dob->rspeed = a.rspeed;
@@ -93,9 +91,22 @@ void InputGestureDirectObjects::updateTuioObject(InputGestureBasicObjects::updat
     DirectObject * dob = objects[a.id];
     dob->s_id = a.id;
     dob->f_id = a.f_id;
-    dob->setX( a.xpos);
-    dob->setY( a.ypos);
-    dob->angle = a.angle;
+    dob->set(a.xpos, a.ypos);
+
+    float increment = a.angle - dob->orientation;
+    if (increment > PI){
+        increment -= 2*PI;
+    }else if (increment < -PI){
+        increment += 2*PI;
+    }
+    dob->angleValue += increment / (2*PI);
+    if (dob->angleValue > 1){
+        dob->angleValue = 1;
+    }else if (dob->angleValue < 0){
+        dob->angleValue = 0;
+    }
+
+    dob->orientation = a.angle;
     dob->xspeed = a.xspeed;
     dob->yspeed= a.yspeed;
     dob->rspeed = a.rspeed;
