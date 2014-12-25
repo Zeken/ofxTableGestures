@@ -33,6 +33,7 @@
 #define _RENDERER
 
 #include <string>
+#include "ofMatrix4x4.h"
 
 class Renderer{
     public:
@@ -57,8 +58,7 @@ class Renderer{
         bool distortion_enabled;
     protected:
         ///Distortion matrix to be stored
-        double matrix[16];
-        void SetIdentity(double* _matrix);
+        ofMatrix4x4 matrix;
         ///To be rewritted:
         ///Called before draw thing to be distortionate
         virtual void StartDistortion()=0;
@@ -66,7 +66,7 @@ class Renderer{
         virtual void EndDistortion()=0;
     public:
         ///returns the distortion Matrix
-        double * GetDistortionMatrix();
+        ofMatrix4x4 GetDistortionMatrix();
         ///constructor
         Renderer();
         virtual ~Renderer()=0;
