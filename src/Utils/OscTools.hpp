@@ -7,27 +7,79 @@ class OscOptionalUnpacker
     int n;
     public:
     OscOptionalUnpacker(ofxOscMessage & m):msg(m),n(0){}
-    OscOptionalUnpacker & operator >> (int & i)
-    {
-        if(n < msg.getNumArgs())
-        {
-            i = msg.getArgAsInt32( n++ );
+    OscOptionalUnpacker & operator >> (int & i) {
+        if(n < msg.getNumArgs()) {
+            switch(msg.getArgType(n)) {
+            case OFXOSC_TYPE_INT32:
+                i = msg.getArgAsInt32( n++ );
+                break;
+            case OFXOSC_TYPE_INT64:
+                i = static_cast<int>(msg.getArgAsInt64( n++ ));
+                break;
+            case OFXOSC_TYPE_FLOAT:
+                i = static_cast<int>(msg.getArgAsFloat( n++ ));
+                break;
+            default:
+                i = msg.getArgAsInt32(n++);
+                break;
+            }
         }
         return *this;
     }
-    OscOptionalUnpacker & operator >> (float & i)
-    {
-        if(n < msg.getNumArgs())
-        {
-            i = msg.getArgAsFloat( n++ );
+    OscOptionalUnpacker & operator >> (long & i) {
+        if(n < msg.getNumArgs()) {
+            switch(msg.getArgType(n)) {
+            case OFXOSC_TYPE_INT32:
+                i = msg.getArgAsInt32( n++ );
+                break;
+            case OFXOSC_TYPE_INT64:
+                i = msg.getArgAsInt64( n++ );
+                break;
+            case OFXOSC_TYPE_FLOAT:
+                i = static_cast<long>(msg.getArgAsFloat( n++ ));
+                break;
+            default:
+                i = msg.getArgAsInt64(n++);
+                break;
+            }
         }
         return *this;
     }
-    OscOptionalUnpacker & operator >> (double & i)
-    {
-        if(n < msg.getNumArgs())
-        {
-            i = msg.getArgAsFloat( n++ );
+    OscOptionalUnpacker & operator >> (float & i) {
+        if(n < msg.getNumArgs()) {
+            switch(msg.getArgType(n)) {
+            case OFXOSC_TYPE_INT32:
+                i = static_cast<float>(msg.getArgAsInt32( n++ ));
+                break;
+            case OFXOSC_TYPE_INT64:
+                i = static_cast<float>(msg.getArgAsInt64( n++ ));
+                break;
+            case OFXOSC_TYPE_FLOAT:
+                i = msg.getArgAsFloat( n++ );
+                break;
+            default:
+                i = msg.getArgAsFloat(n++);
+                break;
+            }
+        }
+        return *this;
+    }
+    OscOptionalUnpacker & operator >> (double & i) {
+        if(n < msg.getNumArgs()) {
+            switch(msg.getArgType(n)) {
+            case OFXOSC_TYPE_INT32:
+                i = static_cast<double>(msg.getArgAsInt32( n++ ));
+                break;
+            case OFXOSC_TYPE_INT64:
+                i = static_cast<double>(msg.getArgAsInt64( n++ ));
+                break;
+            case OFXOSC_TYPE_FLOAT:
+                i = msg.getArgAsFloat( n++ );
+                break;
+            default:
+                i = msg.getArgAsFloat(n++);
+                break;
+            }
         }
         return *this;
     }
