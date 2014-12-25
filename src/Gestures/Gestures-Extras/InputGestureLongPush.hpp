@@ -112,19 +112,19 @@ class CanLongPush: public Base
 {
 public:
     //Interface redefined by ofApp
-    void ELongPushTriger(InputGestureLongPush::LongPushTrigerArgs & eventargs)
+    void ELongPushTrigger(InputGestureLongPush::LongPushTriggerArgs & eventargs)
     {
-        LongPushTriger(eventargs.x,eventargs.y);
-    }
-    virtual void LongPushTriger(float x, float y) {}
+        LongPushTrigger(eventargs.x,eventargs.y);
+  }
+    virtual void LongPushTrigger(float x, float y) {}
 
     CanLongPush()
-    {
-        ofAddListener(InputGestureLongPush::Instance().LongPushTriger,this,&CanLongPush::ELongPushTriger);
+  {
+        ofAddListener(InputGestureLongPush::LongPushTrigger,this,&CanLongPush::ELongPushTrigger);
     }
     virtual ~CanLongPush()
     {
-        ofRemoveListener(InputGestureLongPush::Instance().LongPushTriger,this,&CanLongPush::ELongPushTriger);
+        ofRemoveListener(InputGestureLongPush::LongPushTrigger,this,&CanLongPush::ELongPushTrigger);
     }
 };
 

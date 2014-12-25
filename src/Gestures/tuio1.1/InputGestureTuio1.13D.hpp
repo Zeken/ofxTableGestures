@@ -54,12 +54,12 @@ class InputGestureTuio113D : public Singleton<InputGestureTuio113D> {
     typedef commonObject3DArgs updateTuioObject3DArgs;
     typedef commonIdArgs removeTuioObject3DArgs;
     
-    ofEvent<addTuioCursor3DArgs>    addTuioCursor3D;
-    ofEvent<updateTuioCursor3DArgs> updateTuioCursor3D;
-    ofEvent<removeTuioCursor3DArgs> removeTuioCursor3D;
-    ofEvent<addTuioObject3DArgs>    addTuioObject3D;
-    ofEvent<updateTuioObject3DArgs> updateTuioObject3D;
-    ofEvent<removeTuioObject3DArgs> removeTuioObject3D;
+    static ofEvent<addTuioCursor3DArgs>    addTuioCursor3D;
+    static ofEvent<updateTuioCursor3DArgs> updateTuioCursor3D;
+    static ofEvent<removeTuioCursor3DArgs> removeTuioCursor3D;
+    static ofEvent<addTuioObject3DArgs>    addTuioObject3D;
+    static ofEvent<updateTuioObject3DArgs> updateTuioObject3D;
+    static ofEvent<removeTuioObject3DArgs> removeTuioObject3D;
 
     std::set<int> c_s_ids;
     std::set<int> o_s_ids;

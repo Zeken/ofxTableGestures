@@ -65,15 +65,15 @@ class InputGestureTuio1125D : public Singleton<InputGestureTuio1125D>
     typedef commonBlob25DArgs updateTuioBlob25DArgs;
     typedef commonIdArgs removeTuioBlob25DArgs;
 
-    ofEvent<addTuioCursor25DArgs>       addTuioCursor25D;
-    ofEvent<updateTuioCursor25DArgs>    updateTuioCursor25D;
-    ofEvent<removeTuioCursor25DArgs>    removeTuioCursor25D;
-    ofEvent<addTuioObject25DArgs>       addTuioObject25D;
-    ofEvent<updateTuioObject25DArgs>    updateTuioObject25D;
-    ofEvent<removeTuioObject25DArgs>    removeTuioObject25D;
-    ofEvent<addTuioBlob25DArgs>         addTuioBlob25D;
-    ofEvent<updateTuioBlob25DArgs>      updateTuioBlob25D;
-    ofEvent<removeTuioBlob25DArgs>      removeTuioBlob25D;
+    static ofEvent<addTuioCursor25DArgs>       addTuioCursor25D;
+    static ofEvent<updateTuioCursor25DArgs>    updateTuioCursor25D;
+    static ofEvent<removeTuioCursor25DArgs>    removeTuioCursor25D;
+    static ofEvent<addTuioObject25DArgs>       addTuioObject25D;
+    static ofEvent<updateTuioObject25DArgs>    updateTuioObject25D;
+    static ofEvent<removeTuioObject25DArgs>    removeTuioObject25D;
+    static ofEvent<addTuioBlob25DArgs>         addTuioBlob25D;
+    static ofEvent<updateTuioBlob25DArgs>      updateTuioBlob25D;
+    static ofEvent<removeTuioBlob25DArgs>      removeTuioBlob25D;
 
     std::set<int> c_s_ids;
     std::set<int> o_s_ids;

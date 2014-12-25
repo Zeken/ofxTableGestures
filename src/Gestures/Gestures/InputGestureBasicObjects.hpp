@@ -60,11 +60,11 @@ public:
     typedef commonIdArgs exitTuioObjectArgs;
     typedef commonObjectArgs enterTuioObjectArgs;
 
-    ofEvent<removeTuioObjectArgs> removeTuioObject;
-    ofEvent<exitTuioObjectArgs> exitTuioObject;
-    ofEvent<addTuioObjectArgs> addTuioObject;
-    ofEvent<enterTuioObjectArgs> enterTuioObject;
-    ofEvent<updateTuioObjectArgs> updateTuioObject;
+        static ofEvent<removeTuioObjectArgs> removeTuioObject;
+        static ofEvent<exitTuioObjectArgs> exitTuioObject;
+        static ofEvent<addTuioObjectArgs> addTuioObject;
+        static ofEvent<enterTuioObjectArgs> enterTuioObject;
+        static ofEvent<updateTuioObjectArgs> updateTuioObject;
 
 ///Internal stuff
 

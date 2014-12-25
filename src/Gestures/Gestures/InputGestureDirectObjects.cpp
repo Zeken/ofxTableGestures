@@ -31,13 +31,19 @@
 
 #include "InputGestureDirectObjects.hpp"
 
+ofEvent<InputGestureDirectObjects::newObjectArgs> InputGestureDirectObjects::newObject;
+ofEvent<InputGestureDirectObjects::removeObjectArgs> InputGestureDirectObjects::removeObject;
+ofEvent<InputGestureDirectObjects::updateObjectArgs> InputGestureDirectObjects::updateObject;
+ofEvent<InputGestureDirectObjects::enterObjectArgs> InputGestureDirectObjects::enterObject;
+ofEvent<InputGestureDirectObjects::exitObjectArgs> InputGestureDirectObjects::exitObject;
+
 InputGestureDirectObjects::InputGestureDirectObjects()
 {
-    registerEvent(InputGestureBasicObjects::Instance().addTuioObject,&InputGestureDirectObjects::addTuioObject);
-    registerEvent(InputGestureBasicObjects::Instance().enterTuioObject,&InputGestureDirectObjects::enterTuioObject);
-    registerEvent(InputGestureBasicObjects::Instance().updateTuioObject,&InputGestureDirectObjects::updateTuioObject);
-    registerEvent(InputGestureBasicObjects::Instance().removeTuioObject,&InputGestureDirectObjects::removeTuioObject);
-    registerEvent(InputGestureBasicObjects::Instance().exitTuioObject,&InputGestureDirectObjects::exitTuioObject);
+    registerEvent(InputGestureBasicObjects::addTuioObject,&InputGestureDirectObjects::addTuioObject);
+    registerEvent(InputGestureBasicObjects::enterTuioObject,&InputGestureDirectObjects::enterTuioObject);
+    registerEvent(InputGestureBasicObjects::updateTuioObject,&InputGestureDirectObjects::updateTuioObject);
+    registerEvent(InputGestureBasicObjects::removeTuioObject,&InputGestureDirectObjects::removeTuioObject);
+    registerEvent(InputGestureBasicObjects::exitTuioObject,&InputGestureDirectObjects::exitTuioObject);
 }
 
 void InputGestureDirectObjects::addTuioObject(InputGestureBasicObjects::addTuioObjectArgs & a)

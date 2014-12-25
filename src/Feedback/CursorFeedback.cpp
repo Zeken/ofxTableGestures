@@ -32,10 +32,9 @@
 #include "CursorFeedback.hpp"
 
 CursorFeedback::CursorFeedback(){
-    registerEvent(InputGestureBasicFingers::I().addTuioCursor,&CursorFeedback::addTuioCursor);
-    registerEvent(InputGestureBasicFingers::I().updateTuioCursor,&CursorFeedback::updateTuioCursor);
-    registerEvent(InputGestureBasicFingers::I().removeTuioCursor,&CursorFeedback::removeTuioCursor);
-}
+    registerEvent(InputGestureBasicFingers::addTuioCursor,&CursorFeedback::addTuioCursor);
+    registerEvent(InputGestureBasicFingers::updateTuioCursor,&CursorFeedback::updateTuioCursor);
+    registerEvent(InputGestureBasicFingers::removeTuioCursor,&CursorFeedback::removeTuioCursor);
 
 
 CursorFeedback::~CursorFeedback(){

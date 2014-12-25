@@ -57,11 +57,11 @@ public:
     typedef commonIdArgs exitTuioCursorArgs;
     typedef commonCursorArgs enterTuioCursorArgs;
 
-    ofEvent<removeTuioCursorArgs> removeTuioCursor;
-    ofEvent<exitTuioCursorArgs> exitTuioCursor;
-    ofEvent<addTuioCursorArgs> addTuioCursor;
-    ofEvent<enterTuioCursorArgs> enterTuioCursor;
-    ofEvent<updateTuioCursorArgs> updateTuioCursor;
+        static ofEvent<removeTuioCursorArgs> removeTuioCursor;
+        static ofEvent<exitTuioCursorArgs> exitTuioCursor;
+        static ofEvent<addTuioCursorArgs> addTuioCursor;
+        static ofEvent<enterTuioCursorArgs> enterTuioCursor;
+        static ofEvent<updateTuioCursorArgs> updateTuioCursor;
 
 ///Internal stuff
 

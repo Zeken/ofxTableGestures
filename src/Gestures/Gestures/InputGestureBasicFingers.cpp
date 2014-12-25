@@ -1,11 +1,17 @@
 #include "InputGestureBasicFingers.hpp"
 #include "GraphicDispatcher.hpp"
 
+ofEvent<InputGestureBasicFingers::removeTuioCursorArgs> InputGestureBasicFingers::removeTuioCursor;
+ofEvent<InputGestureBasicFingers::exitTuioCursorArgs> InputGestureBasicFingers::exitTuioCursor;
+ofEvent<InputGestureBasicFingers::addTuioCursorArgs> InputGestureBasicFingers::addTuioCursor;
+ofEvent<InputGestureBasicFingers::enterTuioCursorArgs> InputGestureBasicFingers::enterTuioCursor;
+ofEvent<InputGestureBasicFingers::updateTuioCursorArgs> InputGestureBasicFingers::updateTuioCursor;
+
 InputGestureBasicFingers::InputGestureBasicFingers()
 {
-    registerEvent( InputGestureTuio112D::Instance().removeTuioCursor2D , &InputGestureBasicFingers::removeTuioCursor2D );
-    registerEvent( InputGestureTuio112D::Instance().updateTuioCursor2D , &InputGestureBasicFingers::updateTuioCursor2D );
-    registerEvent( InputGestureTuio112D::Instance().addTuioCursor2D , &InputGestureBasicFingers::addTuioCursor2D );
+    registerEvent(InputGestureTuio112D::removeTuioCursor2D, &InputGestureBasicFingers::removeTuioCursor2D);
+    registerEvent(InputGestureTuio112D::updateTuioCursor2D, &InputGestureBasicFingers::updateTuioCursor2D);
+    registerEvent(InputGestureTuio112D::addTuioCursor2D, &InputGestureBasicFingers::addTuioCursor2D);
 }
 
 void InputGestureBasicFingers::addTuioCursor2D(int id, float xpos,float ypos,float xspeed,float yspeed,float maccel)

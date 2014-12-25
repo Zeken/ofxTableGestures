@@ -73,11 +73,6 @@ public:
     typedef DirectObjectArgsBase enterObjectArgs;
     typedef DirectObjectArgsBase exitObjectArgs;
 
-    ofEvent<newObjectArgs> newObject;
-    ofEvent<removeObjectArgs> removeObject;
-    ofEvent<updateObjectArgs> updateObject;
-    ofEvent<enterObjectArgs> enterObject;
-    ofEvent<exitObjectArgs> exitObject;
 
     InputGestureDirectObjects();
     void addTuioObject(InputGestureBasicObjects::addTuioObjectArgs & a);
@@ -85,6 +80,11 @@ public:
     void updateTuioObject(InputGestureBasicObjects::updateTuioObjectArgs & a);
     void removeTuioObject(InputGestureBasicObjects::removeTuioObjectArgs & a);
     void exitTuioObject(InputGestureBasicObjects::exitTuioObjectArgs & a);
+        static ofEvent<newObjectArgs> newObject;
+        static ofEvent<removeObjectArgs> removeObject;
+        static ofEvent<updateObjectArgs> updateObject;
+        static ofEvent<enterObjectArgs> enterObject;
+        static ofEvent<exitObjectArgs> exitObject;
 };
 
 template <class Base>
@@ -126,20 +126,20 @@ public:
     //registering
     CanDirectObjects()
     {
-        ofAddListener(InputGestureDirectObjects::Instance().newObject,this,&CanDirectObjects::EnewObject);
-        ofAddListener(InputGestureDirectObjects::Instance().removeObject,this,&CanDirectObjects::EremoveObject);
-        ofAddListener(InputGestureDirectObjects::Instance().updateObject,this,&CanDirectObjects::EupdateObject);
-        ofAddListener(InputGestureDirectObjects::Instance().enterObject,this,&CanDirectObjects::EenterObject);
-        ofAddListener(InputGestureDirectObjects::Instance().exitObject,this,&CanDirectObjects::EexitObject);
+            ofAddListener(InputGestureDirectObjects::newObject,this,&CanDirectObjects::EnewObject);
+            ofAddListener(InputGestureDirectObjects::removeObject,this,&CanDirectObjects::EremoveObject);
+            ofAddListener(InputGestureDirectObjects::updateObject,this,&CanDirectObjects::EupdateObject);
+            ofAddListener(InputGestureDirectObjects::enterObject,this,&CanDirectObjects::EenterObject);
+            ofAddListener(InputGestureDirectObjects::exitObject,this,&CanDirectObjects::EexitObject);
     }
 
     virtual ~CanDirectObjects()
     {
-        ofRemoveListener(InputGestureDirectObjects::Instance().newObject,this,&CanDirectObjects::EnewObject);
-        ofRemoveListener(InputGestureDirectObjects::Instance().removeObject,this,&CanDirectObjects::EremoveObject);
-        ofRemoveListener(InputGestureDirectObjects::Instance().updateObject,this,&CanDirectObjects::EupdateObject);
-        ofRemoveListener(InputGestureDirectObjects::Instance().enterObject,this,&CanDirectObjects::EenterObject);
-        ofRemoveListener(InputGestureDirectObjects::Instance().exitObject,this,&CanDirectObjects::EexitObject);
+            ofRemoveListener(InputGestureDirectObjects::newObject,this,&CanDirectObjects::EnewObject);
+            ofRemoveListener(InputGestureDirectObjects::removeObject,this,&CanDirectObjects::EremoveObject);
+            ofRemoveListener(InputGestureDirectObjects::updateObject,this,&CanDirectObjects::EupdateObject);
+            ofRemoveListener(InputGestureDirectObjects::enterObject,this,&CanDirectObjects::EenterObject);
+            ofRemoveListener(InputGestureDirectObjects::exitObject,this,&CanDirectObjects::EexitObject);
     }
 
 };
