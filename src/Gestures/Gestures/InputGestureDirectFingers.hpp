@@ -48,7 +48,7 @@ class DirectFinger : public ofVec3f{
 
 
 
-class InputGestureDirectFingers : public EventClient, public Singleton<InputGestureDirectFingers>
+class InputGestureDirectFingers : public EventClient{
 {
     std::map<int,DirectFinger *> fingers;
 public:

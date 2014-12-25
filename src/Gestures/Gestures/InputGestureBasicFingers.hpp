@@ -45,8 +45,7 @@ struct commonCursorArgs : public commonIdArgs
     float maccel;
 };
 
-class InputGestureBasicFingers : public  EventClient, public Singleton<InputGestureBasicFingers>
-{
+class InputGestureBasicFingers : public EventClient{
 
 
 public:

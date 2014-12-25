@@ -48,8 +48,7 @@ struct commonObjectArgs : public commonIdArgs
         float raccel;
 };
 
-class InputGestureBasicObjects : public  EventClient, public Singleton<InputGestureBasicObjects>
-{
+class InputGestureBasicObjects : public EventClient{
 
 
 public:

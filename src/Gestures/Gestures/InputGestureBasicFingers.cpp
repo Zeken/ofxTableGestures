@@ -1,4 +1,5 @@
 #include "InputGestureBasicFingers.hpp"
+#include "GenericManager.hpp"
 #include "GraphicDispatcher.hpp"
 
 ofEvent<InputGestureBasicFingers::removeTuioCursorArgs> InputGestureBasicFingers::removeTuioCursor;

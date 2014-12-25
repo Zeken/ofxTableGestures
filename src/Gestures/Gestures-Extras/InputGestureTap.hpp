@@ -36,8 +36,7 @@
 
 
 
-class InputGestureTap : public EventClient, public Singleton<InputGestureTap>
-{
+class InputGestureTap : public EventClient{
 
     float & maxdistance;
     float & maxtime;
@@ -85,10 +84,6 @@ public:
         }
     }
 };
-
-
-///Deprecated
-typedef InputGestureTap InputGestueTap;
 
 //template<class Base>
 //class CanTap: public Base

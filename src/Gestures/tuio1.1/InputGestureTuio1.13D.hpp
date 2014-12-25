@@ -39,7 +39,7 @@
 #include "OscTools.hpp"
 #include "InputGestureTuio1.12.5D.hpp"
 
-class InputGestureTuio113D : public Singleton<InputGestureTuio113D> {
+class InputGestureTuio113D{
     
 
     public:

@@ -111,6 +111,8 @@ void TableApp::setup(){
     ofSetWindowTitle(win_name + "\t press 'h' to show help content");
     ofBackground(0, 0, 0);
     ofHideCursor();
+
+    genericManager.initAll();
 }
 
 //--------------------------------------------------------------

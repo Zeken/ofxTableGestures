@@ -33,6 +33,10 @@
 #include <fstream>
 #include "Shapes.hpp"
 #include "ofxGlobalConfig.hpp"
+#include "GenericManager.hpp"
+
+
+
 
 #define INC_STEP 20
 #define M_2PI M_PI*2

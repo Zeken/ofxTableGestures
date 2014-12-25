@@ -64,8 +64,7 @@ public:
 
 
 
-class InputGestureDirectObjects : public EventClient, public Singleton<InputGestureDirectObjects>
-{
+class InputGestureDirectObjects : public EventClient{
     std::map<int,DirectObject *> objects;
 
     struct DirectObjectArgsBase: public EventArgs

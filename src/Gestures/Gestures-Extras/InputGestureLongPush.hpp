@@ -37,8 +37,7 @@
 #include <algorithm>
 #include "Alarm.hpp"
 
-class InputGestureLongPush: public EventClient , public Singleton<InputGestureLongPush>
-{
+class InputGestureLongPush : public EventClient{
     float & maxdistance;
     float & mintime;
     std::map< DirectFinger *,  std::pair < DirectPoint , float > > previous;

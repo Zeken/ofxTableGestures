@@ -31,6 +31,7 @@
 
 #include "container.hpp"
 #include "Shapes.hpp"
+#include "GenericManager.hpp"
 
 using namespace shapes;
 namespace simulator

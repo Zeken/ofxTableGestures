@@ -36,6 +36,7 @@
 #include "Grid.hpp"
 #include "Renderer.hpp"
 #include <string>
+#include "GenericManager.hpp"
 
 ///By defining the global "NO_SIMULATOR", it disables the integrated simulator.
 ///When it is enabled, it can be activated by tapping the 's' key.
@@ -51,6 +52,7 @@ class TableApp {
     ///The data contained by this class is private and it is mainly used for distortionate the output,
     ///draws the calibration grid and draws the simulator scene.
     private:
+        GenericManager genericManager;
         ///Renderer: used for distortionate the graphic output.
         Renderer *renderer;
         ///Grid: used for drawing the calibration grid on the screen.

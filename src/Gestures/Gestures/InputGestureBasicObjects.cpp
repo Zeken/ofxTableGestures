@@ -1,4 +1,5 @@
 #include "InputGestureBasicObjects.hpp"
+#include "GenericManager.hpp"
 #include "GraphicDispatcher.hpp"
 
 ofEvent<InputGestureBasicObjects::removeTuioObjectArgs> InputGestureBasicObjects::removeTuioObject;

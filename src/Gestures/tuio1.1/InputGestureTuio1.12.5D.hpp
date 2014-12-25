@@ -40,8 +40,7 @@
 #include "InputGestureTuio1.12D.hpp"
 
 
-class InputGestureTuio1125D : public Singleton<InputGestureTuio1125D>
-{
+class InputGestureTuio1125D{
     
     public:
     
