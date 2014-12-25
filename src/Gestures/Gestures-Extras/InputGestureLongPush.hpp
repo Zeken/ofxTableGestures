@@ -38,72 +38,23 @@
 #include "Alarm.hpp"
 
 class InputGestureLongPush : public EventClient{
-    float & maxdistance;
-    float & mintime;
-    std::map< DirectFinger *,  std::pair < DirectPoint , float > > previous;
-public:
-    struct LongPushTrigerArgs : public EventArgs
-    {
-        float x;
-        float y;
-    };
-    ofEvent<LongPushTrigerArgs> LongPushTriger;
-    InputGestureLongPush():
-        maxdistance(ofxGlobalConfig::getRef("GESTURES:KEEP:MAXDISTANCE",0.005f)),
-        mintime(ofxGlobalConfig::getRef("GESTURES:KEEP:MINTIME",1.0f))
-        {
-            registerEvent(InputGestureDirectFingers::Instance().newCursor,&InputGestureLongPush::newCursor);
-            registerEvent(InputGestureDirectFingers::Instance().updateCursor,&InputGestureLongPush::updateCursor);
-            registerEvent(InputGestureDirectFingers::Instance().removeCursor,&InputGestureLongPush::removeCursor);
-        }
-    virtual void newCursor(InputGestureDirectFingers::newCursorArgs & a)
-    {
-        DirectFinger * f = a.finger;
-        float now = ofGetElapsedTimef();
-        previous[f]= make_pair(DirectPoint(f->getX(),f->getY()),now);
-        Alarm::Setup(now+mintime,this,&InputGestureLongPush::update);
-    }
+    public:
+        struct LongPushTriggerArgs : public EventArgs{
+            float x;
+            float y;
+        };
+        static ofEvent<LongPushTriggerArgs> LongPushTrigger;
 
-    void update(float & now)
-    {
-        std::map< DirectFinger *,  std::pair < DirectPoint , float > >::iterator iter = previous.begin();
-        for(; iter!=previous.end();)
-        {
-            if((now - iter->second.second) > mintime)
-            {
-                LongPushTrigerArgs eventargs;
-                eventargs.x = iter->first->getX();
-                eventargs.y = iter->first->getY();
-                ofNotifyEvent(LongPushTriger,eventargs);
+        InputGestureLongPush();
+        void update(float & now);
+        virtual void newCursor(InputGestureDirectFingers::newCursorArgs & a);
+        virtual void updateCursor(InputGestureDirectFingers::updateCursorArgs & a);
+        virtual void removeCursor(InputGestureDirectFingers::removeCursorArgs & a);
 
-                previous.erase(iter++);
-            }
-            else
-            {
-                ++iter;
-            }
-        }
-    }
-    virtual void updateCursor(InputGestureDirectFingers::updateCursorArgs & a)
-    {
-        DirectFinger * f = a.finger;
-        if(previous.find(f) != previous.end())
-        {
-            if (previous[f].first.getDistance(f) > maxdistance)
-            {
-                previous.erase(f);
-            }
-        }
-    }
-    virtual void removeCursor(InputGestureDirectFingers::removeCursorArgs & a)
-    {
-        DirectFinger * f = a.finger;
-        if(previous.find(f) != previous.end())
-        {
-            previous.erase(f);
-        }
-    }
-
+    private:
+        float & maxdistance;
+        float & mintime;
+        std::map< DirectFinger *,  std::pair < ofVec3f , float > > previous;
 };
 
 template<class Base>
