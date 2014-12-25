@@ -49,15 +49,10 @@ float TableApp::width = 0;
 
 
 TableApp::TableApp(std::string name):
-//    calibration_enabled(false),
     calibration_mode(0),
     show_help(false),
     show_info(false),
     hide_cursor(true),
-    #ifndef NO_SIMULATOR
-    simulator(new simulator::Simulator()),
-    is_simulating(false),
-    #endif
     squaredInterface(ofxGlobalConfig::getRef("GLOBAL:SQUAREDINTERFACE",1)),
     matrix_updated(false)
 {
@@ -76,6 +71,10 @@ TableApp::TableApp(std::string name):
     ofAddListener(ofEvents().windowResized,this,&TableApp::windowResized);
     
     win_name = name;
+
+#ifndef NO_SIMULATOR
+    simulator = new simulator::Simulator();
+#endif
 }
 
 TableApp::~TableApp(){
@@ -128,10 +127,11 @@ void TableApp::update(ofEventArgs & args){
     oscInput.update();
     ///Update graphic data, with this command all update methods from all 'Graphics' are launched
     GenericManager::get<ObjectFeedback>()->update();
-    ///Update simulator objects
-    #ifndef NO_SIMULATOR
-    if(is_simulating) simulator->Update();
-    #endif
+#ifndef NO_SIMULATOR
+    if (simulator->isRunning()){
+        simulator->Update();
+    }
+#endif
     updateInfo();
 }
 
@@ -223,9 +223,6 @@ void TableApp::draw(){
     glEnable(GL_DEPTH_TEST);
     renderer->End();
     ofPopMatrix();
-    #ifndef NO_SIMULATOR
-    if(is_simulating) simulator->Draw();
-    #endif
 }
 
 //--------------------------------------------------------------
@@ -397,8 +394,7 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
                         hide_cursor=true;
                         ofHideCursor();
                     }
-                    is_simulating=false;
-                    simulator->Reset();
+                    simulator->run(false);
                 }
                 else{
                     was_distorsion_enabled = renderer->IsEnabled();
@@ -406,7 +402,7 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
                     renderer->Disable();
                     hide_cursor=false;
                     ofShowCursor();
-                    is_simulating=true;
+                    simulator->run(true);
                 }
                 matrix_updated = false;
             #endif
@@ -422,9 +418,6 @@ void TableApp::Evaluate_Cursor(int key)
     switch(key)
     {
         case OF_KEY_UP:
-        #ifndef NO_SIMULATOR
-            if(!is_simulating)
-        #endif
                 if(renderer->IsEnabled() && show_grid)
                 {
                     switch(calibration_mode)
@@ -437,9 +430,6 @@ void TableApp::Evaluate_Cursor(int key)
                 }
             break;
         case OF_KEY_DOWN:
-        #ifndef NO_SIMULATOR
-            if(!is_simulating)
-        #endif
                 if(renderer->IsEnabled() && show_grid)
                 {
                     switch(calibration_mode)
@@ -452,9 +442,6 @@ void TableApp::Evaluate_Cursor(int key)
                 }
             break;
         case OF_KEY_RIGHT:
-        #ifndef NO_SIMULATOR
-            if(!is_simulating)
-        #endif
                 if(renderer->IsEnabled() && show_grid)
                 {
                     switch(calibration_mode)
@@ -467,9 +454,6 @@ void TableApp::Evaluate_Cursor(int key)
                 }
             break;
         case OF_KEY_LEFT:
-        #ifndef NO_SIMULATOR
-            if(!is_simulating)
-        #endif
                 if(renderer->IsEnabled() && show_grid)
                 {
                     switch(calibration_mode)
@@ -487,9 +471,6 @@ void TableApp::Evaluate_Cursor(int key)
 void TableApp::windowResized(ofResizeEventArgs & event){
     int w = event.width;
     int h = event.height;
-    #ifndef NO_SIMULATOR
-    if(is_simulating) simulator->windowResized(w,h);
-    #endif
     grid->Resize();
     ///calls resize method of all 'Graphics' when nedded.
     GraphicDispatcher::Instance().Resize(w,h);
