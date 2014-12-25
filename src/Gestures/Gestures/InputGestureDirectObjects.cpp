@@ -63,7 +63,6 @@ void InputGestureDirectObjects::addTuioObject(InputGestureBasicObjects::addTuioO
     eventargs.object = dob;
     eventargs.target = a.target;
     ofNotifyEvent(newObject,eventargs);
-
 }
 
 void InputGestureDirectObjects::enterTuioObject(InputGestureBasicObjects::enterTuioObjectArgs & a)

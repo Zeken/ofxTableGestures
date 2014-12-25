@@ -65,91 +65,77 @@ public:
 
 
 class InputGestureDirectObjects : public EventClient{
-    std::map<int,DirectObject *> objects;
+        struct DirectObjectArgsBase : public EventArgs{
+            DirectObject * object;
+        };
+        std::map<int,DirectObject *> objects;
 
-    struct DirectObjectArgsBase: public EventArgs
-    {
-        DirectObject * object;
-    };
-public:
+    public:
+        typedef DirectObjectArgsBase newObjectArgs;
+        typedef DirectObjectArgsBase removeObjectArgs;
+        typedef DirectObjectArgsBase updateObjectArgs;
+        typedef DirectObjectArgsBase enterObjectArgs;
+        typedef DirectObjectArgsBase exitObjectArgs;
 
-    typedef DirectObjectArgsBase newObjectArgs;
-    typedef DirectObjectArgsBase removeObjectArgs;
-    typedef DirectObjectArgsBase updateObjectArgs;
-    typedef DirectObjectArgsBase enterObjectArgs;
-    typedef DirectObjectArgsBase exitObjectArgs;
-
-
-    InputGestureDirectObjects();
-    void addTuioObject(InputGestureBasicObjects::addTuioObjectArgs & a);
-    void enterTuioObject(InputGestureBasicObjects::enterTuioObjectArgs & a);
-    void updateTuioObject(InputGestureBasicObjects::updateTuioObjectArgs & a);
-    void removeTuioObject(InputGestureBasicObjects::removeTuioObjectArgs & a);
-    void exitTuioObject(InputGestureBasicObjects::exitTuioObjectArgs & a);
         static ofEvent<newObjectArgs> newObject;
         static ofEvent<removeObjectArgs> removeObject;
         static ofEvent<updateObjectArgs> updateObject;
         static ofEvent<enterObjectArgs> enterObject;
         static ofEvent<exitObjectArgs> exitObject;
+
+        InputGestureDirectObjects();
+        void addTuioObject(InputGestureBasicObjects::addTuioObjectArgs & a);
+        void enterTuioObject(InputGestureBasicObjects::enterTuioObjectArgs & a);
+        void updateTuioObject(InputGestureBasicObjects::updateTuioObjectArgs & a);
+        void removeTuioObject(InputGestureBasicObjects::removeTuioObjectArgs & a);
+        void exitTuioObject(InputGestureBasicObjects::exitTuioObjectArgs & a);
 };
 
 template <class Base>
-class CanDirectObjects : public  Base
-{
-public:
-    void EnewObject(InputGestureDirectObjects::newObjectArgs & eventargs)
-    {
-        newObject(eventargs.object);
-    }
-    virtual void newObject(DirectObject * object) {}
-    void EremoveObject(InputGestureDirectObjects::removeObjectArgs & eventargs)
-    {
-        removeObject(eventargs.object);
-    }
-    virtual void removeObject(DirectObject * object) {}
-    void EupdateObject(InputGestureDirectObjects::updateObjectArgs & eventargs)
-    {
-        updateObject(eventargs.object);
-    }
-    virtual void updateObject(DirectObject * object) {}
-    void EenterObject(InputGestureDirectObjects::enterObjectArgs & eventargs)
-    {
-        enterObject(eventargs.object);
-    }
-    virtual void enterObject(DirectObject * object)
-    {
-        newObject(object);
-    }
-    void EexitObject(InputGestureDirectObjects::exitObjectArgs & eventargs)
-    {
-        exitObject(eventargs.object);
-    }
-    virtual void exitObject(DirectObject * object)
-    {
-        removeObject(object);
-    }
+class CanDirectObjects : public Base{
+    public:
+        void EnewObject(InputGestureDirectObjects::newObjectArgs & eventargs){
+            newObject(eventargs.object);
+        }
+        virtual void newObject(DirectObject*) {}
+        void EremoveObject(InputGestureDirectObjects::removeObjectArgs & eventargs){
+            removeObject(eventargs.object);
+        }
+        virtual void removeObject(DirectObject*) {}
+        void EupdateObject(InputGestureDirectObjects::updateObjectArgs & eventargs){
+            updateObject(eventargs.object);
+        }
+        virtual void updateObject(DirectObject*) {}
+        void EenterObject(InputGestureDirectObjects::enterObjectArgs & eventargs){
+            enterObject(eventargs.object);
+        }
+        virtual void enterObject(DirectObject* object){
+            newObject(object);
+        }
+        void EexitObject(InputGestureDirectObjects::exitObjectArgs & eventargs){
+            exitObject(eventargs.object);
+        }
+        virtual void exitObject(DirectObject* object){
+            removeObject(object);
+        }
 
-    //registering
-    CanDirectObjects()
-    {
+        //registering
+        CanDirectObjects(){
             ofAddListener(InputGestureDirectObjects::newObject,this,&CanDirectObjects::EnewObject);
             ofAddListener(InputGestureDirectObjects::removeObject,this,&CanDirectObjects::EremoveObject);
             ofAddListener(InputGestureDirectObjects::updateObject,this,&CanDirectObjects::EupdateObject);
             ofAddListener(InputGestureDirectObjects::enterObject,this,&CanDirectObjects::EenterObject);
             ofAddListener(InputGestureDirectObjects::exitObject,this,&CanDirectObjects::EexitObject);
-    }
+        }
 
-    virtual ~CanDirectObjects()
-    {
+        virtual ~CanDirectObjects(){
             ofRemoveListener(InputGestureDirectObjects::newObject,this,&CanDirectObjects::EnewObject);
             ofRemoveListener(InputGestureDirectObjects::removeObject,this,&CanDirectObjects::EremoveObject);
             ofRemoveListener(InputGestureDirectObjects::updateObject,this,&CanDirectObjects::EupdateObject);
             ofRemoveListener(InputGestureDirectObjects::enterObject,this,&CanDirectObjects::EenterObject);
             ofRemoveListener(InputGestureDirectObjects::exitObject,this,&CanDirectObjects::EexitObject);
-    }
-
+        }
 };
 
-
-
 #endif // INPUTGESTUREDIRECTOBJECTS_H_INCLUDED
+

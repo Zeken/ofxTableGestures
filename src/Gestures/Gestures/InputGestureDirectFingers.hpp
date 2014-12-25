@@ -46,22 +46,18 @@ class DirectFinger : public ofVec3f{
         float xspeed, yspeed, maccel;
 };
 
-
-
 class InputGestureDirectFingers : public EventClient{
-{
-    std::map<int,DirectFinger *> fingers;
-public:
-    struct commonDirectFingerArgs: public EventArgs
-    {
-        DirectFinger * finger;
-    };
+        struct commonDirectFingerArgs : public EventArgs{
+            DirectFinger * finger;
+        };
+        std::map<int,DirectFinger *> fingers;
 
-    typedef commonDirectFingerArgs newCursorArgs;
-    typedef commonDirectFingerArgs removeCursorArgs;
-    typedef commonDirectFingerArgs updateCursorArgs;
-    typedef commonDirectFingerArgs enterCursorArgs;
-    typedef commonDirectFingerArgs exitCursorArgs;
+    public:
+        typedef commonDirectFingerArgs newCursorArgs;
+        typedef commonDirectFingerArgs removeCursorArgs;
+        typedef commonDirectFingerArgs updateCursorArgs;
+        typedef commonDirectFingerArgs enterCursorArgs;
+        typedef commonDirectFingerArgs exitCursorArgs;
 
         static ofEvent<removeCursorArgs> removeCursor;
         static ofEvent<newCursorArgs> newCursor;
@@ -69,12 +65,12 @@ public:
         static ofEvent<enterCursorArgs> enterCursor;
         static ofEvent<exitCursorArgs> exitCursor;
 
-    InputGestureDirectFingers();
-    void addTuioCursor(InputGestureBasicFingers::addTuioCursorArgs & a);
-    void enterTuioCursor(InputGestureBasicFingers::enterTuioCursorArgs & a);
-    void updateTuioCursor(InputGestureBasicFingers::updateTuioCursorArgs & a);
-    void removeTuioCursor(InputGestureBasicFingers::removeTuioCursorArgs & a);
-    void exitTuioCursor(InputGestureBasicFingers::removeTuioCursorArgs & a);
+        InputGestureDirectFingers();
+        void addTuioCursor(InputGestureBasicFingers::addTuioCursorArgs & a);
+        void enterTuioCursor(InputGestureBasicFingers::enterTuioCursorArgs & a);
+        void updateTuioCursor(InputGestureBasicFingers::updateTuioCursorArgs & a);
+        void removeTuioCursor(InputGestureBasicFingers::removeTuioCursorArgs & a);
+        void exitTuioCursor(InputGestureBasicFingers::removeTuioCursorArgs & a);
 };
 
 

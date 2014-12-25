@@ -73,6 +73,4 @@ class InputGestureTap : public EventClient{
 //    }
 //};
 
-
-
 #endif // INPUTGESTURETAP_HPP_INCLUDED

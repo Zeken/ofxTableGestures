@@ -32,12 +32,11 @@
 #ifndef TUIO_INPUTGESTUREBASICFINGERS_H
 #define TUIO_INPUTGESTUREBASICFINGERS_H
 
+#include <map>
 #include <set>
 #include "InputGestureTuio1.1.hpp"
 
-
-struct commonCursorArgs : public commonIdArgs
-{
+struct commonCursorArgs : public commonIdArgs{
     float xpos;
     float ypos;
     float xspeed;
@@ -46,15 +45,12 @@ struct commonCursorArgs : public commonIdArgs
 };
 
 class InputGestureBasicFingers : public EventClient{
-
-
-public:
-
-    typedef commonCursorArgs addTuioCursorArgs;
-    typedef commonCursorArgs updateTuioCursorArgs;
-    typedef commonIdArgs removeTuioCursorArgs;
-    typedef commonIdArgs exitTuioCursorArgs;
-    typedef commonCursorArgs enterTuioCursorArgs;
+    public:
+        typedef commonCursorArgs addTuioCursorArgs;
+        typedef commonCursorArgs updateTuioCursorArgs;
+        typedef commonIdArgs removeTuioCursorArgs;
+        typedef commonIdArgs exitTuioCursorArgs;
+        typedef commonCursorArgs enterTuioCursorArgs;
 
         static ofEvent<removeTuioCursorArgs> removeTuioCursor;
         static ofEvent<exitTuioCursorArgs> exitTuioCursor;
@@ -62,32 +58,29 @@ public:
         static ofEvent<enterTuioCursorArgs> enterTuioCursor;
         static ofEvent<updateTuioCursorArgs> updateTuioCursor;
 
-///Internal stuff
+        InputGestureBasicFingers();
+        void addTuioCursor2D(int id, float xpos,float ypos,float xspeed,float yspeed,float maccel);
+        void updateTuioCursor2D(int id, float xpos,float ypos,float xspeed,float yspeed,float maccel);
+        void removeTuioCursor2D(int id);
+        void addTuioCursor2D(InputGestureTuio112D::addTuioCursor2DArgs & eventargs){
+            addTuioCursor2D(eventargs.id,
+                            eventargs.xpos, eventargs.ypos,
+                            eventargs.xspeed, eventargs.yspeed,
+                            eventargs.maccel);
+        }
+        void updateTuioCursor2D(InputGestureTuio112D::updateTuioCursor2DArgs & eventargs){
+            updateTuioCursor2D(eventargs.id,
+                                eventargs.xpos, eventargs.ypos,
+                                eventargs.xspeed, eventargs.yspeed,
+                                eventargs.maccel);
+        }
+        void removeTuioCursor2D(InputGestureTuio112D::removeTuioCursor2DArgs & eventargs){
+            removeTuioCursor2D(eventargs.id);
+        }
 
-private:
-
-    std::map<int,Graphic * > graphic_assignations;
-    std::set<int> ids;
-
-public:
-
-    InputGestureBasicFingers();
-    void addTuioCursor2D(int id, float xpos,float ypos,float xspeed,float yspeed,float maccel);
-    void updateTuioCursor2D(int id, float xpos,float ypos,float xspeed,float yspeed,float maccel);
-    void removeTuioCursor2D(int id);
-    void addTuioCursor2D(InputGestureTuio112D::addTuioCursor2DArgs & eventargs)
-    {
-        addTuioCursor2D(eventargs.id,eventargs.xpos,eventargs.ypos,eventargs.xspeed,eventargs.yspeed,eventargs.maccel);
-    }
-    void updateTuioCursor2D(InputGestureTuio112D::updateTuioCursor2DArgs & eventargs)
-    {
-        updateTuioCursor2D(eventargs.id,eventargs.xpos,eventargs.ypos,eventargs.xspeed,eventargs.yspeed,eventargs.maccel);
-    }
-    void removeTuioCursor2D(InputGestureTuio112D::removeTuioCursor2DArgs & eventargs)
-    {
-        removeTuioCursor2D(eventargs.id);
-    }
-
+    private:
+        std::map<int, const Graphic*> graphic_assignations;
+        std::set<int> ids;
 };
-
 #endif
+

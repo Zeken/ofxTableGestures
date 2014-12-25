@@ -78,6 +78,4 @@ public:
     }
 };
 
-
-
 #endif // INPUTGESTUREKEEP_HPP_INCLUDED

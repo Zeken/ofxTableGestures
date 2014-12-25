@@ -1,6 +1,8 @@
 #ifndef OSCTOOLS_HPP_INCLUDED
 #define OSCTOOLS_HPP_INCLUDED
 
+#include "ofxOsc.h"
+
 class OscOptionalUnpacker
 {
     ofxOscMessage & msg;
@@ -83,16 +85,13 @@ class OscOptionalUnpacker
         }
         return *this;
     }
-    OscOptionalUnpacker & operator >> (std::string & i)
-    {
-        if(n < msg.getNumArgs())
-        {
+    OscOptionalUnpacker & operator >> (std::string & i) {
+        if(n < msg.getNumArgs()) {
             i = msg.getArgAsString( n++ );
         }
         return *this;
     }
-    bool Eos()
-    {
+    bool Eos() {
         return n >= msg.getNumArgs();
     }
 };
@@ -102,23 +101,19 @@ class OscPacker
     ofxOscMessage & msg;
     public:
     OscPacker(ofxOscMessage & m):msg(m){}
-    OscPacker & operator << (int i)
-    {
+    OscPacker & operator << (int i) {
         msg.addIntArg(i);
         return *this;
     }
-    OscPacker & operator << (unsigned int i)
-    {
+    OscPacker & operator << (unsigned int i) {
         msg.addIntArg(i);
         return *this;
     }
-    OscPacker & operator << (float i)
-    {
+    OscPacker & operator << (float i) {
         msg.addFloatArg(i);
         return *this;
     }
-    OscPacker & operator << (const std::string & i)
-    {
+    OscPacker & operator << (const std::string & i) {
         msg.addStringArg(i);
         return *this;
     }

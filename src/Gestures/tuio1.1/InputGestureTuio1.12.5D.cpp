@@ -32,8 +32,6 @@
 #include "InputGestureTuio1.12.5D.hpp"
 #include <string>
 
-
-
 ofEvent<InputGestureTuio1125D::addTuioCursor25DArgs> InputGestureTuio1125D::addTuioCursor25D;
 ofEvent<InputGestureTuio1125D::updateTuioCursor25DArgs> InputGestureTuio1125D::updateTuioCursor25D;
 ofEvent<InputGestureTuio1125D::removeTuioCursor25DArgs> InputGestureTuio1125D::removeTuioCursor25D;

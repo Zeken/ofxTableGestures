@@ -41,19 +41,19 @@ class Renderer{
             ///height scale factor
         static double height_offset;
             ///width scale factor
-		static double width_offset;
+                static double width_offset;
             ///x position
-		static double center_x;
+                static double center_x;
             ///y position
-		static double center_y;
+                static double center_y;
             ///y rotation angle
-		static double angle_h;
+                static double angle_h;
             ///x rotation angle
-		static double angle_w;
+                static double angle_w;
             ///z rotation angle
-		static double angle;
-		///Distortion path file
-		std::string DistortionPath;
+                static double angle;
+                ///Distortion path file
+                std::string DistortionPath;
         ///Enable/disable distortion flag
         bool distortion_enabled;
     protected:

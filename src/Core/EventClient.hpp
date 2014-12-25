@@ -32,6 +32,9 @@
 #ifndef EVENTCLIENT_HPP_INCLUDED
 #define EVENTCLIENT_HPP_INCLUDED
 
+#include <list>
+#include "ofEvents.h"
+
 /// interface AbstractUnregister
 /// Basically it's a commander, that do something
 /// when unregister() is called.
@@ -103,8 +106,9 @@ struct EventUnregisterFiltered: public AbstractUnregister
     
     void my_callback(EventArgsType & e)
     {
-        if(e.target == target)
+        if(e.target == target){
             (listener->*listenerMethod)(e);
+        }
     }
     
     bool isevent(void * eventptr)

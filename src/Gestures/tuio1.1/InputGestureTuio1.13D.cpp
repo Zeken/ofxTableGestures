@@ -32,8 +32,6 @@
 #include "InputGestureTuio1.13D.hpp"
 #include <string>
 
-
-
 ofEvent<InputGestureTuio113D::addTuioCursor3DArgs> InputGestureTuio113D::addTuioCursor3D;
 ofEvent<InputGestureTuio113D::updateTuioCursor3DArgs> InputGestureTuio113D::updateTuioCursor3D;
 ofEvent<InputGestureTuio113D::removeTuioCursor3DArgs> InputGestureTuio113D::removeTuioCursor3D;

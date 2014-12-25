@@ -60,7 +60,7 @@ void InputGestureBasicObjects::updateTuioObject2D(int id, int f_id ,float xpos,f
         {
             enterTuioObjectArgs eventargs;
             eventargs.id = id;
-            eventargs.f_id = f_id ;
+            eventargs.f_id = f_id;
             eventargs.xpos = xpos;
             eventargs.ypos = ypos;
             eventargs.angle = angle;
@@ -76,7 +76,7 @@ void InputGestureBasicObjects::updateTuioObject2D(int id, int f_id ,float xpos,f
 
     updateTuioObjectArgs eventargs;
     eventargs.id = id;
-    eventargs.f_id = f_id ;
+    eventargs.f_id = f_id;
     eventargs.xpos = xpos;
     eventargs.ypos = ypos;
     eventargs.angle = angle;

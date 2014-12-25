@@ -63,7 +63,7 @@ void InputGestureTuio112D::tuio2Dcur(OscOptionalUnpacker & args)
     std::string cmd;
     args >> cmd;
 
-    if(cmd=="set")
+    if(cmd == "set")
     {
         int s_id;
         float xpos=0, ypos=0, xspeed=0, yspeed=0, maccel=0;
@@ -89,35 +89,24 @@ void InputGestureTuio112D::tuio2Dcur(OscOptionalUnpacker & args)
             xpos = xpos * TableApp::getWidth();
         }
         
-        if(c_s_ids.find(s_id) == c_s_ids.end())
+        commonCursor2DArgs eventargs;
+        eventargs.id = s_id;
+        eventargs.xpos = xpos;
+        eventargs.ypos = ypos;
+        eventargs.xspeed = xspeed;
+        eventargs.yspeed = yspeed;
+        eventargs.maccel = maccel;
+        if (c_s_ids.find(s_id) == c_s_ids.end())
         {
-            addTuioCursor2DArgs eventargs;
-            eventargs.id = s_id;
-            eventargs. xpos =  xpos;
-            eventargs.ypos = ypos;
-            eventargs.xspeed = xspeed;
-            eventargs.yspeed = yspeed;
-            eventargs.maccel  = maccel ;
-            ofNotifyEvent(addTuioCursor2D,eventargs);
-
             c_s_ids.insert(s_id);
+            ofNotifyEvent(addTuioCursor2D, eventargs);
         }
         else
         {
-
-            updateTuioCursor2DArgs eventargs;
-            eventargs.id = s_id;
-            eventargs. xpos =  xpos;
-            eventargs.ypos = ypos;
-            eventargs.xspeed = xspeed;
-            eventargs.yspeed = yspeed;
-            eventargs.maccel  = maccel ;
-            ofNotifyEvent(updateTuioCursor2D,eventargs);
-
+            ofNotifyEvent(updateTuioCursor2D, eventargs);
         }
-
     }
-    else if( cmd== "alive"  )
+    else if(cmd == "alive")
     {
         int s_id=0;
         std::set<int> t(c_s_ids);
@@ -134,10 +123,8 @@ void InputGestureTuio112D::tuio2Dcur(OscOptionalUnpacker & args)
             removeTuioCursor2DArgs eventargs;
             eventargs.id = s_id;
             ofNotifyEvent(removeTuioCursor2D,eventargs);
-
         }
     }
-
 }
 
 void InputGestureTuio112D::tuio2Dobj(OscOptionalUnpacker & args)
@@ -170,44 +157,30 @@ void InputGestureTuio112D::tuio2Dobj(OscOptionalUnpacker & args)
             ypos = ypos * TableApp::getHeight();
             xpos = xpos * TableApp::getWidth();
         }
+
+        commonObject2DArgs eventargs;
+        eventargs.id = s_id;
+        eventargs.f_id = f_id;
+        eventargs.xpos = xpos;
+        eventargs.ypos = ypos;
+        eventargs.angle = angle;
+        eventargs.xspeed = xspeed;
+        eventargs.yspeed = yspeed;
+        eventargs.rspeed = rspeed;
+        eventargs.maccel = maccel;
+        eventargs.raccel = raccel;
         if(o_s_ids.find(s_id) == o_s_ids.end())
         {
             o_s_ids.insert(s_id);
-            addTuioObject2DArgs eventargs;
-            eventargs.id =  s_id;
-            eventargs. f_id  =  f_id ;
-            eventargs.xpos = xpos;
-            eventargs. ypos =  ypos;
-            eventargs. angle =  angle;
-            eventargs. xspeed =  xspeed;
-            eventargs.yspeed = yspeed;
-            eventargs. rspeed =  rspeed;
-            eventargs. maccel =  maccel;
-            eventargs.  raccel =   raccel;
-            ofNotifyEvent(addTuioObject2D,eventargs);
-
+            ofNotifyEvent(addTuioObject2D, eventargs);
         }
         else
         {
-            updateTuioObject2DArgs eventargs;
-            eventargs. id =  s_id;
-            eventargs. f_id  =  f_id ;
-            eventargs.xpos = xpos;
-            eventargs. ypos =  ypos;
-            eventargs. angle =  angle;
-            eventargs. xspeed =  xspeed;
-            eventargs.yspeed = yspeed;
-            eventargs. rspeed =  rspeed;
-            eventargs. maccel =  maccel;
-            eventargs.  raccel =   raccel;
-            ofNotifyEvent(updateTuioObject2D,eventargs);
-
+            ofNotifyEvent(updateTuioObject2D, eventargs);
         }
-
     }
-    else if( cmd == "alive"  )
+    else if(cmd == "alive")
     {
-
         int s_id=0;
         std::set<int> t(o_s_ids);
         while(!args.Eos())
@@ -222,10 +195,8 @@ void InputGestureTuio112D::tuio2Dobj(OscOptionalUnpacker & args)
             removeTuioObject2DArgs eventargs;
             eventargs.id = s_id;
             ofNotifyEvent(removeTuioObject2D,eventargs);
-
         }
     }
-
 }
 
 void InputGestureTuio112D::tuio2Dblb(OscOptionalUnpacker & args)
@@ -298,5 +269,4 @@ void InputGestureTuio112D::tuio2Dblb(OscOptionalUnpacker & args)
 
         }
     }
-
 }

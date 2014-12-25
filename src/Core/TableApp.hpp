@@ -65,38 +65,37 @@ class TableApp {
 
         ///Renderer: used for distortionate the graphic output.
         Renderer *renderer;
+
         ///Grid: used for drawing the calibration grid on the screen.
         Grid* grid;
-        ///Show grid flag
         bool show_grid;
 	/// selector of calibration parameter
 	/// translate, rotate, scale, rotate x and y axes,...
         int calibration_mode;
-        ///Show/hide help content flag
+
+        ///Help text
         tableGraphics::Text* helpText;
         bool show_help;
-        ///Show/hide information flag
+
+        ///Graphic information text
         tableGraphics::Text* infoText;
         bool show_info;
-		///Show/hide cursor flag
-		bool hide_cursor;
-		///Simulator
-		#ifndef NO_SIMULATOR
-            simulator::Simulator* simulator;
-            ///Simulator enabled flag
-            bool is_simulating;
-            ///distortion status before enable simulator.
-            bool was_distorsion_enabled;
-            ///cursor status before enable simulator.
-            bool was_cursor_hide;
-        #endif
-        int & squaredInterface;
 
-        ///Flag to recalculate the ignore collision matrix.
-        bool matrix_updated;
-        //App Window Name
+        ///Show/hide cursor flag
+        bool hide_cursor;
+
+        ///Simulator
+#ifndef NO_SIMULATOR
+        simulator::Simulator* simulator;
+        ///distortion status before enable simulator.
+        bool was_distorsion_enabled;
+        ///cursor status before enable simulator.
+        bool was_cursor_hide;
+#endif
+        ///App Window Name
         std::string win_name;
-        //Cursor key evaluation
+
+        ///Cursor key evaluation
         void Evaluate_Cursor(int key);
 
 	///Update global matrix
@@ -107,7 +106,8 @@ class TableApp {
         ///and loaded distortion parameters from file.
         TableApp(std::string name = "Table APP");
         ///Destructor
-        ~TableApp();
+        virtual ~TableApp();
+
         /// Screen information
         void loadInfo();
         void updateInfo();
@@ -119,26 +119,19 @@ class TableApp {
         static int GetSquareSide();
 
         ///Key funcs, they only repports the ones that are not used by the system
-        virtual void KeyPressed  (int key){}
-		virtual void KeyReleased (int key){}
+        virtual void KeyPressed  (int){}
+        virtual void KeyReleased (int){}
 
         /// ofBaseApp methods..
-		void setup();
-		void update(ofEventArgs & args);
-		void draw();
-		void keyPressed  (ofKeyEventArgs & event);
-		void keyReleased(ofKeyEventArgs & event);
-		void mouseDragged(ofMouseEventArgs & event);
-		void mousePressed(ofMouseEventArgs & event);
-		void mouseReleased(ofMouseEventArgs & event);
-		void windowResized(ofResizeEventArgs & event);
-
-		///From old GlobalConfig
-		static float height;
-		static float width;
-        static float getHeight(){return TableApp::height;}
-        static float getWidth(){return TableApp::width;}
-
+                void setup();
+                void update(ofEventArgs & args);
+                void draw();
+                void keyPressed  (ofKeyEventArgs & event);
+                void keyReleased(ofKeyEventArgs & event);
+                void mouseDragged(ofMouseEventArgs & event);
+                void mousePressed(ofMouseEventArgs & event);
+                void mouseReleased(ofMouseEventArgs & event);
+                void windowResized(ofResizeEventArgs & event);
 };
 
 #endif

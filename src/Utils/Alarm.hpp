@@ -102,6 +102,7 @@ private:
             schedules.erase(schedules.begin(),newbegin);
             std::for_each(cschedules.begin(),cschedules.end(),callDelegate(now));
         }
+
         template<class ListenerClass>
         void Setup(float time, ListenerClass * target, void (ListenerClass::*listenerMethod)(float&) )
         {

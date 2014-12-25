@@ -72,9 +72,6 @@ void InputGestureBasicFingers::updateTuioCursor2D(int id, float xpos,float ypos,
     eventargs.maccel = maccel;
     eventargs.target = target;
     ofNotifyEvent(updateTuioCursor,eventargs);
-    
-
-    
 }
 
 void InputGestureBasicFingers::removeTuioCursor2D(int id)

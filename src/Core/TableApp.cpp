@@ -41,12 +41,8 @@
 
 #define WIDTH_STEP 0.005
 #define ANGLE_STEP 1
-//#define DISTORTION_PATH "calibration.conf"
-
-
 float TableApp::height = 0;
 float TableApp::width = 0;
-
 
 TableApp::TableApp(std::string name):
         calibration_mode(0),
@@ -81,7 +77,7 @@ TableApp::~TableApp(){
 
 #ifndef NO_SIMULATOR
     delete simulator;
-    #endif
+#endif
     delete renderer;
 
     ofRemoveListener(ofEvents().update,this,&TableApp::update);
@@ -91,9 +87,7 @@ TableApp::~TableApp(){
     ofRemoveListener(ofEvents().mousePressed,this,&TableApp::mousePressed);
     ofRemoveListener(ofEvents().mouseReleased,this,&TableApp::mouseReleased);
     ofRemoveListener(ofEvents().windowResized,this,&TableApp::windowResized);
-
 }
-
 
 int TableApp::GetSquareSide(){
     if(ofGetWidth() > ofGetHeight())return ofGetHeight();
@@ -103,8 +97,6 @@ int TableApp::GetSquareSide(){
 //--------------------------------------------------------------
 void TableApp::setup(){
     ofSetFrameRate(60);
-    ///starts the tuioinput thread
-    //tuio::tuioinput::Instance().init();
     ofSetWindowTitle(win_name + "\t press 'h' to show help content");
     ofBackground(0, 0, 0);
     ofHideCursor();
@@ -119,11 +111,8 @@ void TableApp::setup(){
 }
 
 //--------------------------------------------------------------
-void TableApp::update(ofEventArgs & args){
-    ///Update input events, it says to all input gestures to process the gesture stack.
-    //tuio::tuioAreaDelivery::Instance().processTevents();
+void TableApp::update(ofEventArgs&){
     oscInput.update();
-    ///Update graphic data, with this command all update methods from all 'Graphics' are launched
     GenericManager::get<ObjectFeedback>()->update();
 #ifndef NO_SIMULATOR
     if (simulator->isRunning()){
@@ -201,7 +190,7 @@ void TableApp::draw(){
 //--------------------------------------------------------------
 void TableApp::keyPressed(ofKeyEventArgs & event){
     int key = event.key;
-    #ifndef NO_SIMULATOR
+#ifndef NO_SIMULATOR
     switch(key)
     {
         case 'a':
@@ -214,7 +203,7 @@ void TableApp::keyPressed(ofKeyEventArgs & event){
             KeyPressed(key);
         break;
     }
-    #endif
+#endif
     Evaluate_Cursor(key);
 }
 
@@ -226,18 +215,18 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
         default:
             KeyReleased(key);
         break;
-        #ifndef NO_SIMULATOR
+#ifndef NO_SIMULATOR
         case 'a':
             simulator->Hold(false);
         break;
         case 'z':
             simulator->Select(false);
         break;
-        #endif
+#endif
         case 'f':
             ofToggleFullscreen();
-		break;
-		case 'c':
+        break;
+        case 'c':
             if(renderer->IsEnabled()){
                 renderer->SaveDistortion();
             }
@@ -245,73 +234,16 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
             grid->setVisible(show_grid);
         break;
         case OF_KEY_RETURN:
-            #ifndef NO_SIMULATOR
-            if(!is_simulating)
-            #endif
-            if(renderer->IsEnabled() && show_grid) calibration_mode ++;
-            if(calibration_mode > 3) calibration_mode = 0;
+            if(renderer->IsEnabled() && show_grid)
+            {
+                calibration_mode ++;
+            }
+            if(calibration_mode > 3)
+            {
+                calibration_mode = 0;
+            }
             grid->setMode(calibration_mode);
         break;
-        /*case OF_KEY_UP:
-            #ifndef NO_SIMULATOR
-            if(!is_simulating)
-            #endif
-            if(renderer->IsEnabled() && show_grid)
-            {
-                switch(calibration_mode)
-                {
-                    case 0:renderer->center_y--;break;
-                    case 1:renderer->height_offset+=WIDTH_STEP;break;
-                    case 2:renderer->angle+=ANGLE_STEP;break;
-                    case 3:renderer->angle_h+=ANGLE_STEP;break;
-                }
-            }
-        break;
-        case OF_KEY_DOWN:
-            #ifndef NO_SIMULATOR
-            if(!is_simulating)
-            #endif
-            if(renderer->IsEnabled() && show_grid)
-            {
-                switch(calibration_mode)
-                {
-                    case 0:renderer->center_y++;break;
-                    case 1:renderer->height_offset-=WIDTH_STEP;break;
-                    case 2:renderer->angle-=ANGLE_STEP;break;
-                    case 3:renderer->angle_h-=ANGLE_STEP;break;
-                }
-            }
-        break;
-        case OF_KEY_RIGHT:
-            #ifndef NO_SIMULATOR
-            if(!is_simulating)
-            #endif
-            if(renderer->IsEnabled() && show_grid)
-            {
-                switch(calibration_mode)
-                {
-                    case 0:renderer->center_x++;break;
-                    case 1:renderer->width_offset+=WIDTH_STEP;break;
-                    case 2:renderer->angle+=ANGLE_STEP;break;
-                    case 3:renderer->angle_w+=ANGLE_STEP;break;
-                }
-            }
-        break;
-        case OF_KEY_LEFT:
-            #ifndef NO_SIMULATOR
-            if(!is_simulating)
-            #endif
-            if(renderer->IsEnabled() && show_grid)
-            {
-                switch(calibration_mode)
-                {
-                    case 0:renderer->center_x--;break;
-                    case 1:renderer->width_offset-=WIDTH_STEP;break;
-                    case 2:renderer->angle-=ANGLE_STEP;break;
-                    case 3:renderer->angle_w-=ANGLE_STEP;break;
-                }
-            }
-        break;*/
         case 'i':
             show_info = !show_info;
             infoText->setVisible(show_info);
@@ -329,15 +261,11 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
         case 'r':
             if(renderer->IsEnabled() && show_grid)
                 renderer->LoadDefaultValues();
-            #ifndef NO_SIMULATOR
-                if(is_simulating)
-                    simulator->Reset();
-            #endif
+#ifndef NO_SIMULATOR
+            simulator->Reset();
+#endif
         break;
         case 'l':
-            #ifndef NO_SIMULATOR
-            if(!is_simulating)
-            #endif
             if(renderer->IsEnabled() && show_grid)
                 renderer->LoadDistortion();
         break;
@@ -346,19 +274,19 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
             helpText->setVisible(show_help);
         break;
         case 'd':
-            #ifndef NO_SIMULATOR
-            if(!is_simulating)
+#ifndef NO_SIMULATOR
+            if(!simulator->isRunning())
             {
-            #endif
-            if(renderer->IsEnabled()) renderer->Disable();
-            else renderer->Enable();
-            #ifndef NO_SIMULATOR
+#endif
+                if(renderer->IsEnabled()) renderer->Disable();
+                else renderer->Enable();
+#ifndef NO_SIMULATOR
             }
-            #endif
+#endif
         break;
         case 's':
-            #ifndef NO_SIMULATOR
-                if(is_simulating){
+#ifndef NO_SIMULATOR
+                if(simulator->isRunning()){
                     ///restore distorsion
                     ///restore cursor
                     if(was_distorsion_enabled) renderer->Enable();
@@ -383,58 +311,48 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
     }
 }
 
-void TableApp::Evaluate_Cursor(int key)
-{
-    switch(key)
-    {
+void TableApp::Evaluate_Cursor(int key){
+    switch(key){
         case OF_KEY_UP:
-                if(renderer->IsEnabled() && show_grid)
-                {
-                    switch(calibration_mode)
-                    {
-                        case 0:renderer->center_y--;break;
-                        case 1:renderer->height_offset+=WIDTH_STEP;break;
-                        case 2:renderer->angle+=ANGLE_STEP;break;
-                        case 3:renderer->angle_h+=ANGLE_STEP;break;
-                    }
+            if(renderer->IsEnabled() && show_grid){
+                switch(calibration_mode){
+                    case 0:renderer->center_y--;break;
+                    case 1:renderer->height_offset+=WIDTH_STEP;break;
+                    case 2:renderer->angle+=ANGLE_STEP;break;
+                    case 3:renderer->angle_h+=ANGLE_STEP;break;
                 }
-            break;
+            }
+        break;
         case OF_KEY_DOWN:
-                if(renderer->IsEnabled() && show_grid)
-                {
-                    switch(calibration_mode)
-                    {
-                        case 0:renderer->center_y++;break;
-                        case 1:renderer->height_offset-=WIDTH_STEP;break;
-                        case 2:renderer->angle-=ANGLE_STEP;break;
-                        case 3:renderer->angle_h-=ANGLE_STEP;break;
-                    }
+            if(renderer->IsEnabled() && show_grid){
+            switch(calibration_mode){
+                    case 0:renderer->center_y++;break;
+                    case 1:renderer->height_offset-=WIDTH_STEP;break;
+                    case 2:renderer->angle-=ANGLE_STEP;break;
+                    case 3:renderer->angle_h-=ANGLE_STEP;break;
                 }
-            break;
+            }
+        break;
         case OF_KEY_RIGHT:
-                if(renderer->IsEnabled() && show_grid)
-                {
-                    switch(calibration_mode)
-                    {
-                        case 0:renderer->center_x++;break;
-                        case 1:renderer->width_offset+=WIDTH_STEP;break;
-                        case 2:renderer->angle+=ANGLE_STEP;break;
-                        case 3:renderer->angle_w+=ANGLE_STEP;break;
-                    }
+            if(renderer->IsEnabled() && show_grid){
+                switch(calibration_mode){
+                    case 0:renderer->center_x++;break;
+                    case 1:renderer->width_offset+=WIDTH_STEP;break;
+                    case 2:renderer->angle+=ANGLE_STEP;break;
+                    case 3:renderer->angle_w+=ANGLE_STEP;break;
                 }
-            break;
+            }
+        break;
         case OF_KEY_LEFT:
-                if(renderer->IsEnabled() && show_grid)
-                {
-                    switch(calibration_mode)
-                    {
-                        case 0:renderer->center_x--;break;
-                        case 1:renderer->width_offset-=WIDTH_STEP;break;
-                        case 2:renderer->angle-=ANGLE_STEP;break;
-                        case 3:renderer->angle_w-=ANGLE_STEP;break;
-                    }
+            if(renderer->IsEnabled() && show_grid){
+                switch(calibration_mode){
+                    case 0:renderer->center_x--;break;
+                    case 1:renderer->width_offset-=WIDTH_STEP;break;
+                    case 2:renderer->angle-=ANGLE_STEP;break;
+                    case 3:renderer->angle_w-=ANGLE_STEP;break;
                 }
-            break;
+            }
+        break;
     }
 }
 //--------------------------------------------------------------
@@ -442,7 +360,6 @@ void TableApp::windowResized(ofResizeEventArgs & event){
     ofVec2f winSize(event.width, event.height);
     updateMatrix(winSize);
 }
-
 
 //--------------------------------------------------------------
 void TableApp::mouseDragged(ofMouseEventArgs & event){
