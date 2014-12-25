@@ -36,11 +36,10 @@
 #include "ofMain.h"
 #include "InputGestureBasicFingers.hpp"
 #include "Graphic.hpp"
-#include "DirectPoint.hpp"
 #include <map>
 
 
-class HistoryPoint : private DirectPoint{
+class HistoryPoint{
     private:
 
         float & MAX_SECONDS;

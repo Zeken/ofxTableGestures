@@ -33,7 +33,6 @@
 
 #include "InputGestureBasicFingers.hpp"
 #include "InputGestureDirectFingers.hpp"
-#include "DirectPoint.hpp"
 #include <algorithm>
 
 
@@ -43,7 +42,7 @@ class InputGestureHands;
 class Hand : public DirectFinger
 {
 private:
-    DirectPoint  getCenter();
+    ofVec3f getCenter();
     bool isValid();
     float getRadius();
 protected:
@@ -52,15 +51,15 @@ protected:
     void UpdateExposedInfo()
     {
         center = getCenter();
-        DirectPoint nc = center + offset;
-        set(nc.getX(),nc.getY());
+        ofVec3f nc = center + offset;
+        set(nc.x,nc.y);
         is_valid = isValid();
         radius = getRadius();
         population = fingers.size();
     }
     void UpdateOffset()
     {
-        DirectPoint pc(getX(),getY());
+        ofVec3f pc(x,y);
         UpdateExposedInfo();
         offset = pc - center;
     }
@@ -77,8 +76,8 @@ public:
     bool is_valid;
     float radius;
     unsigned int population;
-    DirectPoint center;
-    DirectPoint offset;
+    ofVec3f center;
+    ofVec3f offset;
 };
 
 
@@ -89,7 +88,7 @@ class InputGestureHands : public EventClient
     
     std::map<int,Hand*> assignations;
     std::list<Hand *> hands;
-    Hand * getNeighbour(DirectPoint * p, Hand * ignore = NULL);
+    Hand * getNeighbour(ofVec3f * p, Hand * ignore = NULL);
     float & HAND_MAX_RADIUS;
 public:
 
