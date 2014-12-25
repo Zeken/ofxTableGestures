@@ -19,7 +19,7 @@ void InputGestureBasicObjects::addTuioObject2D(int id, int f_id ,float xpos,floa
 {
 
         ids.insert(id);
-        Graphic * target = GraphicDispatcher::Instance().Collide(ofPoint(xpos,ypos));
+        const Graphic * target = GenericManager::get<GraphicDispatcher>()->Collide(ofPoint(xpos,ypos));
         graphic_assignations[id] = target;
         addTuioObjectArgs eventargs;
         eventargs.id = id;
@@ -46,7 +46,7 @@ void InputGestureBasicObjects::updateTuioObject2D(int id, int f_id ,float xpos,f
         return;
     }
 
-    Graphic * target = GraphicDispatcher::Instance().Collide(ofPoint(xpos,ypos));
+    const Graphic * target = GenericManager::get<GraphicDispatcher>()->Collide(ofPoint(xpos,ypos));
 
     if(graphic_assignations[id] != target)
     {

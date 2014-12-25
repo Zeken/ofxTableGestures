@@ -35,7 +35,9 @@
 #include "Renderer_plane.hpp"
 #include "Renderer_to_texture.hpp"
 #include "ofxGlobalConfig.hpp"
-#include "CollisionHelper.h"
+#include "ObjectFeedback.hpp"
+#include "Grid.hpp"
+#include "Text.hpp"
 
 #define WIDTH_STEP 0.005
 #define ANGLE_STEP 1
@@ -72,18 +74,19 @@ TableApp::TableApp(std::string name):
     ofAddListener(ofEvents().mousePressed,this,&TableApp::mousePressed);
     ofAddListener(ofEvents().mouseReleased,this,&TableApp::mouseReleased);
     ofAddListener(ofEvents().windowResized,this,&TableApp::windowResized);
-
-    Figures::CollisionHelper::ignore_transformation_matrix.SetIdentity();
     
     win_name = name;
 }
 
 TableApp::~TableApp(){
-    #ifndef NO_SIMULATOR
+    GenericManager::get<GraphicDispatcher>()->removeGraphic(grid);
+    GenericManager::get<GraphicDispatcher>()->removeGraphic(helpText);
+    GenericManager::get<GraphicDispatcher>()->removeGraphic(infoText);
+
+#ifndef NO_SIMULATOR
     delete simulator;
     #endif
     delete renderer;
-    delete grid;
 
     ofRemoveListener(ofEvents().update,this,&TableApp::update);
     ofRemoveListener(ofEvents().keyPressed,this,&TableApp::keyPressed);
@@ -103,8 +106,6 @@ int TableApp::GetSquareSide(){
 
 //--------------------------------------------------------------
 void TableApp::setup(){
-    grid = new Grid(6,6);
-    full=false;
     ofSetFrameRate(60);
     ///starts the tuioinput thread
     //tuio::tuioinput::Instance().init();
@@ -113,71 +114,76 @@ void TableApp::setup(){
     ofHideCursor();
 
     genericManager.initAll();
+    GenericManager::get<GraphicDispatcher>()->createGraphic(grid, NOT_LAYER);
+    grid->setVisible(show_grid);
+    grid->setMode(calibration_mode);
+    loadInfo();
+    loadHelp();
 }
 
 //--------------------------------------------------------------
 void TableApp::update(ofEventArgs & args){
     ///Update input events, it says to all input gestures to process the gesture stack.
     //tuio::tuioAreaDelivery::Instance().processTevents();
+    oscInput.update();
     ///Update graphic data, with this command all update methods from all 'Graphics' are launched
-    GraphicDispatcher::Instance().Update();
+    GenericManager::get<ObjectFeedback>()->update();
     ///Update simulator objects
     #ifndef NO_SIMULATOR
     if(is_simulating) simulator->Update();
     #endif
+    updateInfo();
 }
 
 //--------------------------------------------------------------
 
-void TableApp::DrawInfo()
-{
-    if(show_info)
-    {
-        glPushMatrix();
-        glTranslatef(50.0f,50.0f,0.0f);
-        ofSetHexColor(0x00FF00);
-        std::stringstream msg;
-        msg << ofGetWidth() << "X" << ofGetHeight() << "@" <<  (int)ofGetFrameRate() << "fps" << std::endl;
-        if(renderer->IsEnabled())
-            msg << "Distortion enabled" << std::endl;
-        else
-            msg << "Distortion disabled" << std::endl;
-        msg << "Calibration data:" << std::endl;
-        msg << renderer->ToString();
-        ofDrawBitmapString(msg.str(), 0, 0);
-        glPopMatrix();
-    }
+void TableApp::loadInfo(){
+    GenericManager::get<GraphicDispatcher>()->createGraphic(infoText, NOT_LAYER);
+    infoText->ignoreMatrixStack(true);
+    infoText->loadFont(10);
+    infoText->setVisible(show_info);
+    infoText->setColor(ofColor(0, 255, 0));
+    infoText->setPosition(ofVec2f(64, 64));
 }
 
-void TableApp::DrawHelp()
-{
-    if(show_help)
-    {
-        glPushMatrix();
-        glTranslatef(50.0f,200.0f,0.0f);
-        ofSetHexColor(0x00FF00);
-        std::stringstream msg;
-        msg << "h - help content." << std::endl;
-        msg << "i - shows graphic information content." << std::endl;
-        msg << "f - toggle fullscreen." << std::endl;
-        msg << "m - shows/hides cursor pointer." << std::endl;
-        msg << "d - enable/disable distortion." << std::endl;
-        msg << "c - calibration mode." << std::endl;
-        msg << "Under calibration mode:" << std::endl;
-        msg << "  r - reset calibration values." << std::endl;
-        msg << "  l - load calibration file." << std::endl;
-        msg << "  return  - toggle calibration parameter." << std::endl;
-        msg << "  cursors - Changes the selected parameter." << std::endl;
-        #ifndef NO_SIMULATOR
-        msg << "s - enable simulator." << std::endl;
-        msg << "Under simulator mode:" << std::endl;
-        msg << "  r - reset." << std::endl;
-        msg << "  a - hold." << std::endl;
-        msg << "  z - select." << std::endl;
-        #endif
-        ofDrawBitmapString(msg.str(), 0, 0);
-        glPopMatrix();
+void TableApp::updateInfo(){
+    infoText->clear();
+    *infoText << ofGetWidth() << "x" << ofGetHeight() << "@" << (int)ofGetFrameRate() << "fps" << std::endl;
+    if(renderer->IsEnabled()){
+        *infoText << "Distortion enabled" << std::endl;
+    }else{
+        *infoText << "Distortion disabled" << std::endl;
     }
+    *infoText << "Calibration data:" << std::endl;
+    *infoText << renderer->ToString();
+}
+
+void TableApp::loadHelp(){
+    GenericManager::get<GraphicDispatcher>()->createGraphic(helpText, NOT_LAYER);
+    helpText->ignoreMatrixStack(true);
+    helpText->loadFont(10);
+    helpText->setVisible(show_help);
+    helpText->setColor(ofColor(0, 255, 0));
+    helpText->setPosition(ofVec2f(64, 256));
+
+    *helpText << "h - help content." << std::endl;
+    *helpText << "i - shows graphic information content." << std::endl;
+    *helpText << "f - toggle fullscreen." << std::endl;
+    *helpText << "m - shows/hides cursor pointer." << std::endl;
+    *helpText << "d - enable/disable distortion." << std::endl;
+    *helpText << "c - calibration mode." << std::endl;
+    *helpText << "Under calibration mode:" << std::endl;
+    *helpText << "  r - reset calibration values." << std::endl;
+    *helpText << "  l - load calibration file." << std::endl;
+    *helpText << "  return  - toggle calibration parameter." << std::endl;
+    *helpText << "  cursors - Changes the selected parameter." << std::endl;
+#ifndef NO_SIMULATOR
+    *helpText << "s - enable simulator." << std::endl;
+    *helpText << "Under simulator mode:" << std::endl;
+    *helpText << "  r - reset." << std::endl;
+    *helpText << "  a - hold." << std::endl;
+    *helpText << "  z - select." << std::endl;
+#endif
 }
 
 void TableApp::draw(){
@@ -212,16 +218,10 @@ void TableApp::draw(){
     ///Draws all 'Graphics'
     glDisable(GL_DEPTH_TEST);
     ofPushMatrix();
-    GraphicDispatcher::Instance().Draw();
+    GenericManager::get<GraphicDispatcher>()->Draw();
     ofPopMatrix();
     glEnable(GL_DEPTH_TEST);
-
-    ofPopMatrix();
-    grid->Draw(show_grid,calibration_mode);
     renderer->End();
-    ///Draws Info & help
-    DrawInfo();
-    DrawHelp();
     ofPopMatrix();
     #ifndef NO_SIMULATOR
     if(is_simulating) simulator->Draw();
@@ -272,6 +272,7 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
                 renderer->SaveDistortion();
             }
             show_grid = !show_grid;
+            grid->setVisible(show_grid);
         break;
         case OF_KEY_RETURN:
             #ifndef NO_SIMULATOR
@@ -279,6 +280,7 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
             #endif
             if(renderer->IsEnabled() && show_grid) calibration_mode ++;
             if(calibration_mode > 3) calibration_mode = 0;
+            grid->setMode(calibration_mode);
         break;
         /*case OF_KEY_UP:
             #ifndef NO_SIMULATOR
@@ -342,6 +344,7 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
         break;*/
         case 'i':
             show_info = !show_info;
+            infoText->setVisible(show_info);
         break;
         case 'm':
             if(hide_cursor)
@@ -370,6 +373,7 @@ void TableApp::keyReleased(ofKeyEventArgs & event){
         break;
         case 'h':
             show_help = !show_help;
+            helpText->setVisible(show_help);
         break;
         case 'd':
             #ifndef NO_SIMULATOR

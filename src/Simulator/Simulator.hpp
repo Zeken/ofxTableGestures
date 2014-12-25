@@ -42,6 +42,11 @@
 #define DEFAULT_PORT 3333
 #define DEFAULT_ADDR "127.0.0.1"
 
+namespace tableGraphics{
+    class Polygon;
+    class Text;
+}
+
 namespace simulator{
     typedef std::vector<cursor*> cursor_list;
     typedef std::vector<object*> object_list;
@@ -73,7 +78,6 @@ namespace simulator{
         public:
             Simulator();
             ~Simulator();
-            void Draw();
             void Update();
             void Hold(bool stat);
             void Select(bool stat);
@@ -109,8 +113,13 @@ namespace simulator{
             float Transformy(float to_transform);
 
             bool LoadConfigFile(std::string path);
+            void loadObjects();
 
             void pushMessage(string message);
+
+        private:
+            tableGraphics::Polygon* tray;
+            tableGraphics::Text* simLog;
     };
 }
 

@@ -33,10 +33,15 @@
 #define _TABLE_APP
 
 #include "ofMain.h"
-#include "Grid.hpp"
-#include "Renderer.hpp"
 #include <string>
 #include "GenericManager.hpp"
+#include "OscInput.hpp"
+
+class Grid;
+class Renderer;
+namespace tableGraphics{
+    class Text;
+}
 
 ///By defining the global "NO_SIMULATOR", it disables the integrated simulator.
 ///When it is enabled, it can be activated by tapping the 's' key.
@@ -53,20 +58,21 @@ class TableApp {
     ///draws the calibration grid and draws the simulator scene.
     private:
         GenericManager genericManager;
+        OscInput oscInput;
         ///Renderer: used for distortionate the graphic output.
         Renderer *renderer;
         ///Grid: used for drawing the calibration grid on the screen.
         Grid* grid;
         ///Show grid flag
         bool show_grid;
-        /// Full/windowed screen flag
-        bool full;
-        /// selector of calibration parameter
-        /// translate, rotate, scale, rotate x and y axes,...
+	/// selector of calibration parameter
+	/// translate, rotate, scale, rotate x and y axes,...
         int calibration_mode;
         ///Show/hide help content flag
+        tableGraphics::Text* helpText;
         bool show_help;
         ///Show/hide information flag
+        tableGraphics::Text* infoText;
         bool show_info;
 		///Show/hide cursor flag
 		bool hide_cursor;
@@ -95,11 +101,13 @@ class TableApp {
         TableApp(std::string name = "Table APP");
         ///Destructor
         ~TableApp();
+        /// Screen information
+        void loadInfo();
+        void updateInfo();
 
-        /// Draws text screen information
-        void DrawInfo();
-        /// Draws text help content
-        void DrawHelp();
+        /// Help content
+        void loadHelp();
+
         ///returns the biggest side of the screen
         static int GetSquareSide();
 //        static double* GetTransformationMatrix(){return calibration_matrix;}

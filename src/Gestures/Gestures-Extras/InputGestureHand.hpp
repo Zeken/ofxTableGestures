@@ -34,6 +34,7 @@
 #include "InputGestureBasicFingers.hpp"
 #include "InputGestureDirectFingers.hpp"
 #include <algorithm>
+#include "Graphic.hpp"
 
 
 

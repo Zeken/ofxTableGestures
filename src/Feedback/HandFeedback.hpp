@@ -34,7 +34,7 @@
 
 #include "InputGestureHand.hpp"
 
-class HandFeedback: public  NotificationGraphic 
+class HandFeedback: public FeedbackGraphic
 {
     std::map<unsigned int,Hand *> hands;
     InputGestureHands igh;

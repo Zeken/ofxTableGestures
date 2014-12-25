@@ -31,16 +31,15 @@
 
 #include "Simulator.hpp"
 #include <fstream>
-#include "Shapes.hpp"
 #include "ofxGlobalConfig.hpp"
+#include "ObjectFeedback.hpp"
 #include "GenericManager.hpp"
-
-
-
+#include "GraphicDispatcher.hpp"
+#include "Polygon.hpp"
+#include "Text.hpp"
 
 #define INC_STEP 20
 #define M_2PI M_PI*2
-using namespace shapes;
 
 #define SCALE_FACTOR 0.91f
 
@@ -60,33 +59,37 @@ namespace simulator
         address = DEFAULT_ADDR;
         loaded = LoadConfigFile(ofToDataPath(NAMEPATH));
         objects.clear();
-        if(!load_default)
-        {
-            std::list<int> ids = Figure_shape::Instance().GetFiducialIds();
-            int i = 0;
-            for(std::list<int>::iterator it = ids.begin(); it!= ids.end(); it++ ){
-                object* tmp = new object(0,(*it),0,0,0,0,0,0,0,0,i);
-                SortObject(tmp);
-                objects.push_back(tmp);
-                i++;
-            }
-            std::cout << "Simulator: " << ofToDataPath(NAMEPATH) << " loaded." << std::endl;
-        }
-        else if(!loaded || load_default)
-        {
-            std::cout << "Simulator: loading default values" << std::endl;
-            for (int i = 0; i< 50; i++){
-                object* tmp = new object(0,i,0,0,0,0,0,0,0,0,i);
-                SortObject(tmp);
-                objects.push_back(tmp);
-            }
-        }
+    loadObjects();
 
+
+    GenericManager::get<GraphicDispatcher>()->createGraphic(tray, APP_LAYER-50);
+    tray->setVisible(false);
+    tray->addVertex(ofVec2f(1.0f, 0.0f));
+    tray->addVertex(ofVec2f(1.0f, 1.0f));
+    tray->addVertex(ofVec2f(0.0f, 1.0f));
+    tray->addVertex(ofVec2f(0.0f, 1.1f));
+    tray->addVertex(ofVec2f(1.1f, 1.1f));
+    tray->addVertex(ofVec2f(1.1f, 0.0f));
+    tray->setColor(ofColor(90, 100, 110));
+
+    GenericManager::get<GraphicDispatcher>()->createGraphic(simLog, NOT_LAYER);
+    simLog->setVisible(false);
+    simLog->setPosition(ofVec2f(0.01f, 1.02f));
+    simLog->setColor(ofColor(255, 127, 63));
+    simLog->useGlobalSize(false);
 
         sender = new ofxOscSender();
         sender->setup(address,port);
-        verdana.loadFont(ofxGlobalConfig::getRef<std::string>("PROGRAM:HELPFONT","verdana.ttf"),int((0.09*ofGetHeight())/7), false, true);
+}
+
+
+void Simulator::run(bool r){
+    running = r;
+    if (!running){
+        Reset();
     }
+    tray->setVisible(running);
+    simLog->setVisible(running);
 
     Simulator::~Simulator(){
         //SaveFile();
@@ -102,6 +105,8 @@ namespace simulator
             ofs << "d" << std::endl;
         }
         delete sender;
+    for (object_list::iterator it = objects.begin(); it != objects.end(); it++){
+        (*it)->setVisible(running);
     }
 
     bool Simulator::LoadConfigFile(std::string path){
@@ -129,81 +134,73 @@ namespace simulator
                 getline(infile,tmp);
             }
             infile.close();
-            //Figure_shape::Instance();
             return true;
         }
         return false;
     }
 
-    void Simulator::SortObject(object* o){
-        int x = (int)(ofGetWidth()-0.045*ofGetWidth());
-        int y = (int)(o->tray_number* OBJECT_RADIUS*ofGetHeight());
-        o->xpos=x;
-        o->ypos=(int)(y+ytray+(OBJECT_RADIUS*ofGetHeight()/2));
-    }
+void Simulator::SortObject(Object* o){
+    float x = 1.05f;
+    float y = o->tray_number * 0.1f + 0.05f;
+    o->Add(o->position.x, o->position.y);
+    o->Update(x, y);
+}
 
-    bool Simulator::IsAtLateralTray(container* c){
-        if(c->xpos>= ofGetWidth()-0.09*ofGetWidth()) return true;
+bool Simulator::IsAtLateralTray(Container* c){
+    if(c->position.x > 1){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool Simulator::IsAtBottomTray(Container* c){
+    if(c->position.y > 1){
+        return true;
+    }else{
         return false;
     }
 
-    bool Simulator::IsAtBottomTray(container* c){
-        if(c->ypos>= ofGetHeight()-0.09*ofGetHeight()) return true;
+bool Simulator::IsOnTheScene(Container* c){
+    if(!IsAtLateralTray(c) && !IsAtBottomTray(c) &&
+         c->position.x >= 0 && c->position.y >= 0){
+        return true;
+    }else{
         return false;
     }
 
-    bool Simulator::IsOnTheScene(container*c){
-        if(!IsAtLateralTray(c) && !IsAtBottomTray(c))return true;
-        return false;
+void Simulator::Update(){
+    float actual = ofGetElapsedTimef();
+    if(actual - previous_timef > 1){
+        updateCursors();
+        updateObjects();
+        previous_timef = actual;
     }
+}
 
-    void Simulator::Draw(){
-        //Draw Object tray..
-        glDisable(GL_DEPTH_TEST);
-        ofFill();
-        ofPushMatrix();
-        ofSetColor(100,100,100);
-        ofRect(ofGetWidth()-0.09*ofGetWidth(),0,0.09*ofGetWidth(),ofGetHeight());
-        ofRect(0,ofGetHeight()-0.09*ofGetHeight(),ofGetWidth()-0.09*ofGetWidth(),0.09*ofGetHeight());
-        ofPopMatrix();
-        //Draw info...
-        ofPushMatrix();
-        ofSetColor(255,100,0);
-        ofTranslate(10,(ofGetHeight()-0.09*ofGetHeight())+10,0);
-        message_notif.clear();
-        for(std::list<string>::iterator it = notify.begin(); it != notify.end(); it++){
-            message_notif+=(*it);
+Container* Simulator::Collide(float x, float y, bool only_objects){
+    //collide with objects
+    for(object_list::iterator it = objects.begin(); it != objects.end(); it++){
+        if((*it)->Collide(x,y)){
+            (*it)->Add(x,y);
+            return (*it);
         }
-        verdana.drawString(message_notif,0,0);
-        ofPopMatrix();
-        //Draw Cursors..
+    }
+    if(!only_objects){
+        //collide with cursors
         for(cursor_list::iterator it = cursors.begin(); it != cursors.end(); it++){
-            (*it)->Draw();
-        }
-        //Draw Objects..
-        for(object_list::iterator it = objects.begin(); it != objects.end(); it++){
-            (*it)->Draw();
-        }
-        glEnable(GL_DEPTH_TEST);
-    }
 
-    void Simulator::Update(){
-        float actual = ofGetElapsedTimef();
-        if(actual - previous_timef > 1){
-            updateCursors();
-            updateObjects();
-            previous_timef = actual;
-        }
-    }
-
-    container* Simulator::Collide(int x, int y,bool only_objects)
-    {
-        //collide with objects
-        for(object_list::iterator it = objects.begin(); it != objects.end(); it++){
+            // Workaround to overcome the implicit
+            //   one-cursor-can-only-collide-with-one-graphic-at-a-time invariant.
+            (*it)->graphic->setCollide(true);
             if((*it)->Collide(x,y)){
+                (*it)->graphic->setCollide(false);
                 (*it)->Add(x,y);
                 return (*it);
             }
+            // In the future, maybe would be better implement some way to allow
+            //   multiple graphics assignments to each cursor.
+            (*it)->graphic->setCollide(false);
         }
         if(!only_objects){
             //collide with cursors
@@ -211,6 +208,9 @@ namespace simulator
                 if((*it)->Collide(x,y)){
                     (*it)->Add(x,y);
                     return (*it);
+    }
+    return NULL;
+}
                 }
             }
             //new cursor
