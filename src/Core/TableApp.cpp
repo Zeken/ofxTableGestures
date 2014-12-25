@@ -41,8 +41,6 @@
 
 #define WIDTH_STEP 0.005
 #define ANGLE_STEP 1
-float TableApp::height = 0;
-float TableApp::width = 0;
 
 TableApp::TableApp(std::string name):
         calibration_mode(0),

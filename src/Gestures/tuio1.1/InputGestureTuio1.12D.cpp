@@ -32,8 +32,6 @@
 #include "InputGestureTuio1.12D.hpp"
 
 #include <string>
-#include "TableApp.hpp"
-
 
 ofEvent<InputGestureTuio112D::addTuioCursor2DArgs> InputGestureTuio112D::addTuioCursor2D;
 ofEvent<InputGestureTuio112D::updateTuioCursor2DArgs> InputGestureTuio112D::updateTuioCursor2D;
@@ -70,25 +68,19 @@ void InputGestureTuio112D::tuio2Dcur(OscOptionalUnpacker & args)
 
         args >> s_id >> xpos >> ypos >> xspeed >> yspeed >> maccel ;
 
-        ///We definetively need a different way to specify this (a parameter for tuio aspect ratio?)
-        if(squaredInterface)
-        {
-            float mins = min(ofGetWidth(),ofGetHeight());
-            float w = ofGetWidth()/mins;
-            float h = ofGetHeight()/mins;
-            xpos = xpos * w - (w-1)/2;
-            ypos = ypos * h - (h-1)/2;
-            if (limitroundarea && sqrt((xpos-0.5f)*(xpos-0.5f)+(ypos-0.5f)*(ypos-0.5f)) > 0.5f)
-            {
-                return;
-            }
-        }
-        else
-        {
-            ypos = ypos * TableApp::getHeight();
-            xpos = xpos * TableApp::getWidth();
-        }
-        
+	///We definetively need a different way to specify this (a parameter for tuio aspect ratio?)
+	if(squaredInterface){
+	    if (limitroundarea && sqrt((xpos-0.5f)*(xpos-0.5f) + (ypos-0.5f)*(ypos-0.5f)) > 0.5f){
+		return;
+	    }
+	}else{
+	    float mins = min(ofGetWidth(), ofGetHeight());
+	    float w = ofGetWidth() / mins;
+	    float h = ofGetHeight() / mins;
+	    xpos = xpos * w;
+	    ypos = ypos * h;
+	}
+
         commonCursor2DArgs eventargs;
         eventargs.id = s_id;
         eventargs.xpos = xpos;
@@ -139,24 +131,18 @@ void InputGestureTuio112D::tuio2Dobj(OscOptionalUnpacker & args)
 
         args >> s_id >> f_id >> xpos >> ypos >> angle >> xspeed >> yspeed >> rspeed >> maccel >> raccel ;
 
-        ///We definetively need a different way to specify this (a parameter for tuio aspect ratio?)
-        if(squaredInterface)
-        {
-            float mins = min(ofGetWidth(),ofGetHeight());
-            float w = ofGetWidth()/mins;
-            float h = ofGetHeight()/mins;
-            xpos = xpos * w - (w-1)/2;
-            ypos = ypos * h - (h-1)/2;
-            if (limitroundareaobj && sqrt((xpos-0.5f)*(xpos-0.5f)+(ypos-0.5f)*(ypos-0.5f)) > 0.5f)
-            {
-                return;
-            }
-        }
-        else
-        {
-            ypos = ypos * TableApp::getHeight();
-            xpos = xpos * TableApp::getWidth();
-        }
+	///We definetively need a different way to specify this (a parameter for tuio aspect ratio?)
+	if(squaredInterface){
+	    if (limitroundareaobj && sqrt((xpos-0.5f)*(xpos-0.5f) + (ypos-0.5f)*(ypos-0.5f)) > 0.5f){
+		return;
+	    }
+	}else{
+	    float mins = min(ofGetWidth(), ofGetHeight());
+	    float w = ofGetWidth() / mins;
+	    float h = ofGetHeight() / mins;
+	    xpos = xpos * w;
+	    ypos = ypos * h;
+	}
 
         commonObject2DArgs eventargs;
         eventargs.id = s_id;
