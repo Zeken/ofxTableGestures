@@ -48,63 +48,44 @@ namespace tableGraphics{
 }
 
 namespace simulator{
-    typedef std::vector<cursor*> cursor_list;
-    typedef std::vector<object*> object_list;
+    typedef std::vector<Cursor*> cursor_list;
+    typedef std::vector<Object*> object_list;
     typedef std::list<string> message_queue;
     class Simulator{
-        private:
-            cursor_list cursors;
-            object_list objects;
-            cursor_list cursors_escene;
-            object_list objects_escene;
-            unsigned int sessionGenerator;
-            unsigned int fseqGenerator;
-            bool hold;
-            bool select;
-            bool move_selecteds;
-            void SortObject(object* o);
-            int ytray;
-            int previous_y;
-            float previous_timef;
-            message_queue notify;
-            ofTrueTypeFont	verdana;
-            ofxOscSender* sender;
-            int port;
-            std::string address;
-            bool loaded;
-            bool load_default;
-            string message_notif;
-            std::string namepath;
         public:
             Simulator();
             ~Simulator();
+            void run(bool);
+            bool isRunning();
             void Update();
             void Hold(bool stat);
             void Select(bool stat);
             void Reset();
-            void mouseDragged(int x, int y, int button);
-            void mousePressed(int x, int y, int button);
-            void mouseReleased(int x, int y, int button);
-            void windowResized(int w, int h);
-        protected:
-            container* Collide(int x,int y,bool only_objects=false);
-            bool IsOnTheScene(container*c);
-            bool IsAtLateralTray(container* c);
-            bool IsAtBottomTray(container* c);
-            cursor_list::iterator IsAtCursorList(cursor* c);
-            object_list::iterator IsAtObjectList(object* o);
-            void MoveYTray(int step);
-            void cursorUpdated(cursor* c);
-            void cursorDeleted(cursor* c);
-            void objectUpdated(object* o);
-            void objectRemoved(object* o);
+            void mouseDragged(float x, float y, int button);
+            void mousePressed(float x, float y, int button);
+            void mouseReleased(float x, float y, int button);
 
-            void addTuioObject(object* o);
-            void updateTuioObject(object* o);
-            void removeTuioObject(object* o);
-            void addTuioCursor(cursor* c);
-            void updateTuioCursor(cursor* c);
-            void removeTuioCursor(cursor* c);
+        protected:
+            Container* Collide(float x, float y, bool only_objects = false);
+            bool IsOnTheScene(Container*c);
+            bool IsAtLateralTray(Container* c);
+            bool IsAtBottomTray(Container* c);
+            cursor_list::iterator IsAtCursorList(Cursor* c);
+            object_list::iterator IsAtObjectList(Object* o);
+            void MoveYTray(int step);
+            void SortObject(Object* o);
+            Cursor* newCursor(ofVec2f);
+            void cursorUpdated(Cursor* c);
+            void cursorDeleted(Cursor* c);
+            void objectUpdated(Object* o);
+            void objectRemoved(Object* o);
+
+            void addTuioObject(Object* o);
+            void updateTuioObject(Object* o);
+            void removeTuioObject(Object* o);
+            void addTuioCursor(Cursor* c);
+            void updateTuioCursor(Cursor* c);
+            void removeTuioCursor(Cursor* c);
 
             void updateCursors();
             void updateObjects();
@@ -120,6 +101,26 @@ namespace simulator{
         private:
             tableGraphics::Polygon* tray;
             tableGraphics::Text* simLog;
+            cursor_list cursors;
+            object_list objects;
+            cursor_list cursors_escene;
+            object_list objects_escene;
+            unsigned int sessionGenerator;
+            unsigned int fseqGenerator;
+            bool hold;
+            bool select;
+            int ytray;
+            float previous_y;
+            float previous_timef;
+            message_queue notify;
+            ofTrueTypeFont      verdana;
+            ofxOscSender* sender;
+            std::string namepath;
+            int port;
+            std::string address;
+            bool loaded;
+            string message_notif;
+            bool running;
     };
 }
 
