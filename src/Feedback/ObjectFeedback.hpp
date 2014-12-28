@@ -57,7 +57,7 @@ class ObjectFeedback{
         enum shapes{ SQUARE, CIRCLE, PENTAGON, DODECAHEDRON, STAR, SQUARE_ROUNDED };
         typedef shapes Shape; 
         struct colorShape{
-            const int id;
+            int id;
             Shape shape;
             ofColor color;
             colorShape(int _id = -1) : id(_id), shape(SQUARE), color(55, 55, 55){} // Default
