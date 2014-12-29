@@ -241,6 +241,9 @@ void Polygon::buildFill(){
 
 void Polygon::buildStroke(){
     vector<ofPoint> vertices = outline.getVertices();
+    if (vertices.empty()){
+	return;
+    }
     vector<ofVec3f>::iterator vertexIt;
     vector<ofVec3f> strokeVertices;
 
