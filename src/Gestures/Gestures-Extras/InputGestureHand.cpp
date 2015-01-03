@@ -74,7 +74,7 @@ Hand * InputGestureHands::getNeighbour(ofVec3f * p, Hand * ignore)
         if (h->is_valid && h != ignore)
         {
             float d = h->center.distance(*p);
-            if (d < HAND_MAX_RADIUS and d < dwinner)
+            if (d < HAND_MAX_RADIUS && d < dwinner)
             {
                 dwinner = d;
                 winner = h;

@@ -270,7 +270,7 @@ void Simulator::mousePressed(float x, float y, int button){
         return;
     }
     Container* tmp = Collide(x, y);
-    Cursor* c = dynamic_cast<Cursor*>(tmp);
+    simulator::Cursor* c = dynamic_cast<simulator::Cursor*>(tmp);
     Object* o = dynamic_cast<Object*>(tmp);
     switch(button){
     case 0:
@@ -374,7 +374,7 @@ void Simulator::mouseReleased(float, float, int button){
         }
         //erase cursors
         for( std::vector<int>::iterator it = todelete.begin(); it != todelete.end(); it++ ){
-            Cursor* tmp = cursors[(*it)];
+            simulator::Cursor* tmp = cursors[(*it)];
             int k = *it;
             cursors.erase(cursors.begin()+k);
             cursorDeleted(tmp);
@@ -444,7 +444,7 @@ void Simulator::Reset(){
     simLog->clear();
 }
 
-cursor_list::iterator Simulator::IsAtCursorList(Cursor* c){
+cursor_list::iterator Simulator::IsAtCursorList(simulator::Cursor* c){
     for(cursor_list::iterator it = cursors_escene.begin(); it != cursors_escene.end(); it++){
         if((*it)->sid == c->sid) return it;
     }
@@ -459,7 +459,7 @@ object_list::iterator Simulator::IsAtObjectList(Object* o){
 }
 
 ///Message generators...
-void Simulator::cursorUpdated(Cursor* c){
+void Simulator::cursorUpdated(simulator::Cursor* c){
     cursor_list::iterator it = IsAtCursorList(c);
     if(IsOnTheScene(c)){
         if(it != cursors_escene.end()){
@@ -480,7 +480,7 @@ void Simulator::cursorUpdated(Cursor* c){
     }
 }
 
-void Simulator::cursorDeleted(Cursor* c){
+void Simulator::cursorDeleted(simulator::Cursor* c){
     cursor_list::iterator it = IsAtCursorList(c);
     if(it != cursors_escene.end()){
         //remove cur
@@ -654,7 +654,7 @@ void Simulator::removeTuioObject(Object* o){
     pushMessage(ostring.str());
 }
 
-void Simulator::addTuioCursor(Cursor* c){
+void Simulator::addTuioCursor(simulator::Cursor* c){
     ofxOscBundle Bundle;
     //alive message
     ofxOscMessage message_alive;
@@ -697,7 +697,7 @@ void Simulator::addTuioCursor(Cursor* c){
     pushMessage(ostring.str());
 }
 
-void Simulator::updateTuioCursor(Cursor* c){
+void Simulator::updateTuioCursor(simulator::Cursor* c){
     ofxOscBundle Bundle;
     //alive message
     ofxOscMessage message_alive;
@@ -740,7 +740,7 @@ void Simulator::updateTuioCursor(Cursor* c){
     pushMessage(ostring.str());
 }
 
-void Simulator::removeTuioCursor(Cursor* c){
+void Simulator::removeTuioCursor(simulator::Cursor* c){
     ofxOscBundle Bundle;
     ofxOscMessage message_alive;
     message_alive.setAddress("/tuio/2Dcur");
@@ -872,7 +872,7 @@ void Simulator::loadObjects(){
 }
 
 simulator::Cursor* Simulator::newCursor(ofVec2f initPos){
-    Cursor* new_cursor = new Cursor(sessionGenerator++, initPos.x, initPos.y, 0, 0, 0);
+    simulator::Cursor* new_cursor = new simulator::Cursor(sessionGenerator++, initPos.x, initPos.y, 0, 0, 0);
     cursors.push_back(new_cursor);
     cursorUpdated(new_cursor);
     return new_cursor;
