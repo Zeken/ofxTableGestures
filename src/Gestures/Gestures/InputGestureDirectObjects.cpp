@@ -98,12 +98,6 @@ void InputGestureDirectObjects::updateTuioObject(InputGestureBasicObjects::updat
     }else if (increment < -PI){
         increment += 2*PI;
     }
-    dob->angleValue += increment / (2*PI);
-    if (dob->angleValue > 1){
-        dob->angleValue = 1;
-    }else if (dob->angleValue < 0){
-        dob->angleValue = 0;
-    }
 
     dob->orientation = a.angle;
     dob->xspeed = a.xspeed;

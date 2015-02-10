@@ -40,26 +40,26 @@ public:
     DirectObject(int _s_id, int _f_id,
                 float _xpos, float _ypos, float _angle,
                 float _xspeed, float _yspeed, float _rspeed,
-                float _maccel, float _raccel, float _angleValue = 0) :
+                float _maccel, float _raccel) :
         ofVec3f(_xpos, _ypos), s_id(_s_id), f_id(_f_id),
-        orientation(_angle), angleValue(_angleValue),
+        orientation(_angle),
         xspeed(_xspeed), yspeed(_yspeed), rspeed(_rspeed),
         maccel(_maccel), raccel(_raccel) {}
 
     DirectObject() : ofVec3f(0),
 	s_id(-1), f_id(0),
-        orientation(0), angleValue(0),
+        orientation(0),
         xspeed(0), yspeed(0), rspeed(0),
         maccel(0), raccel(0) {}
 
     DirectObject(const DirectObject& rhs) : ofVec3f(rhs),
 	s_id(rhs.s_id), f_id(rhs.f_id),
-        orientation(rhs.orientation), angleValue(rhs.angleValue),
+        orientation(rhs.orientation),
         xspeed(rhs.xspeed), yspeed(rhs.yspeed), rspeed(rhs.rspeed),
         maccel(rhs.maccel), raccel(rhs.raccel) {}
 
     int s_id, f_id;
-    float orientation, angleValue, xspeed, yspeed, rspeed, maccel, raccel;
+    float orientation, xspeed, yspeed, rspeed, maccel, raccel;
 };
 
 
