@@ -12,7 +12,7 @@ InputGestureTap::InputGestureTap() :
 void InputGestureTap::newCursor(InputGestureDirectFingers::newCursorArgs & a){
     DirectFinger * f = a.finger;
     float now = ofGetElapsedTimef();
-    previous[f]= make_pair(ofVec3f(f->x, f->y), now);
+    previous[f]= make_pair(ofVec2f(f->x, f->y), now);
 }
 
 void InputGestureTap::removeCursor(InputGestureDirectFingers::removeCursorArgs & a){

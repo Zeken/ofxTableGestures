@@ -46,7 +46,7 @@ namespace tableGraphics {
             void clear();
             bool collide(const ofPoint& point);
 
-            void addVertex(const ofPoint& vertex);
+            void addVertex(const ofVec2f& vertex);
 
             void SetTexture(ofImage&);
             void SetTexture(const std::string& path);
@@ -85,7 +85,7 @@ namespace tableGraphics {
             void drawStroke();
             void buildFill();
             void buildStroke();
-            inline float determinant(const ofVec3f dir1, const ofVec3f dir2);
+            inline float determinant(const ofVec2f& dir1, const ofVec2f& dir2);
         };
 }
 

@@ -32,9 +32,9 @@
 #include "InputGestureHand.hpp"
 
 
-ofVec3f Hand::getCenter()
+ofVec2f Hand::getCenter()
 {
-    ofVec3f p(0);
+    ofVec2f p(0);
     if(fingers.size() < 1)
         return p;
     float x = 0;
@@ -53,7 +53,7 @@ float Hand::getRadius()
     float distance = 0;
     for(std::list<DirectFinger *>::iterator it = fingers.begin(); it != fingers.end(); ++it)
     {
-        ofVec3f* f = *it;
+        ofVec2f* f = *it;
         distance = std::max(f->distance(this->center),distance);
     }
     return distance;
@@ -64,7 +64,7 @@ bool Hand::isValid()
     return fingers.size() >= 1;
 }
 
-Hand * InputGestureHands::getNeighbour(ofVec3f * p, Hand * ignore)
+Hand * InputGestureHands::getNeighbour(ofVec2f * p, Hand * ignore)
 {
     Hand * winner = NULL;
     float dwinner = 1000;

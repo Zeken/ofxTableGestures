@@ -71,7 +71,7 @@ bool Graphic::collideGraphic(const ofPoint & point){
     }
 }
 
-void Graphic::setPosition(const ofVec3f& pos, float angle){
+void Graphic::setPosition(const ofVec2f& pos, float angle){
     transformMatrix.setTranslation(pos);
     transformMatrix.setRotate(ofQuaternion(angle, ofVec3f(0, 0, 1)));
 }

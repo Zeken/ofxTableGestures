@@ -43,7 +43,7 @@ class TapFeedback : public EventClient{
 
         class CircleTap : public FeedbackGraphic{
             public:
-                CircleTap(const ofVec3f& position, float maxradius, float lifeTime);
+                CircleTap(const ofVec2f& position, float maxradius, float lifeTime);
                 float getBornTime();
                 void draw();
                 void clear(){}
@@ -52,7 +52,7 @@ class TapFeedback : public EventClient{
                 float born;
                 float lifetime;
                 float maxradius;
-                ofVec3f p;
+                ofVec2f p;
         };
 
     private:

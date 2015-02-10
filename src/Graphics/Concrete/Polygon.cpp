@@ -125,7 +125,7 @@ void Polygon::draw() {
     }
 }
 
-void Polygon::addVertex(const ofPoint& vertex){
+void Polygon::addVertex(const ofVec2f& vertex){
     outline.addVertex(vertex);
     processed = false;
     isEmpty = false;
@@ -148,7 +148,7 @@ void Polygon::circle(float radius, int res, float star){
     }
     float angleStep = 2*PI / res;
     int i = 0;
-    ofPoint vertex;
+    ofVec2f vertex;
     const float offset = PI * 3/2;
     for (float angle = 0; angle < 2*PI; angle += angleStep){
         float angleOff = angle + offset;
@@ -163,7 +163,7 @@ void Polygon::circle(float radius, int res, float star){
 
 void Polygon::rectangle(float width, float height){
     clear();
-    ofPoint vertex;
+    ofVec2f vertex;
     vertex.set(-width/2, -height/2);
     addVertex(vertex);
     vertex.set(width/2, -height/2);
@@ -188,9 +188,9 @@ bool Polygon::collide(const ofPoint& point){
 void Polygon::mapTexture(){
     texture.getTextureReference().setTextureWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
     ofRectangle boundBox = outline.getBoundingBox();
-    ofPoint min = boundBox.getMin();
-    ofPoint max = boundBox.getMax();
-    ofPoint center = boundBox.getCenter();
+    ofVec2f min = boundBox.getMin();
+    ofVec2f max = boundBox.getMax();
+    ofVec2f center = boundBox.getCenter();
     float width = boundBox.getWidth();
     float height = boundBox.getHeight();
     vector<ofVec2f> texCoords;
@@ -240,12 +240,11 @@ void Polygon::buildFill(){
 }
 
 void Polygon::buildStroke(){
-    vector<ofPoint> vertices = outline.getVertices();
+    vector<ofVec3f> vertices = outline.getVertices();
     if (vertices.empty()){
 	return;
     }
     vector<ofVec3f>::iterator vertexIt;
-    vector<ofVec3f> strokeVertices;
 
     // Check if outline's vertices go clock-wise or counter clock-wise
     int cw = 0;
@@ -259,8 +258,8 @@ void Polygon::buildStroke(){
         if (vertex == vertices.back()){
             next = vertices.front();
         }
-        ofVec3f direction1 = (vertex - previous).normalize();
-        ofVec3f direction2 = (next - vertex).normalize();
+        ofVec2f direction1 = (vertex - previous).normalize();
+        ofVec2f direction2 = (next - vertex).normalize();
         if (determinant(direction1, direction2) > 0){
             cw++;
         }else{
@@ -273,9 +272,9 @@ void Polygon::buildStroke(){
     stroke.addVertices(outline.getVertices());
     stroke.addVertex(outline.getVertices().front());
     for (vertexIt = vertices.begin(); vertexIt != vertices.end(); vertexIt++){
-        ofVec3f vertex = *vertexIt;
-        ofVec3f previous = *(vertexIt - 1);
-        ofVec3f next = *(vertexIt + 1);
+        ofVec2f vertex = *vertexIt;
+        ofVec2f previous = *(vertexIt - 1);
+        ofVec2f next = *(vertexIt + 1);
         if (vertex == vertices.front()){
             previous = vertices.back();
         }
@@ -293,7 +292,7 @@ void Polygon::buildStroke(){
         if (!isConvex){
             float angle2 = direction1.angleRad(direction2);
             angle2 = (angle2 - PI)/2;
-            ofVec3f result2 = direction2.getRotatedRad(angle2, ofVec3f(0,0, isClockwise ? 1 : -1));
+            ofVec2f result2 = direction2.getRotatedRad(angle2, ofVec3f(0,0, isClockwise ? 1 : -1));
             float distance = -strokeWidth / sin(angle2);
             stroke.addVertex(vertex + result2 * distance);
         }else{
@@ -303,7 +302,7 @@ void Polygon::buildStroke(){
             }else{
                 rotAxis.set(0, 0, 1);
             }
-            ofVec3f result1 = direction1.getRotatedRad(PI/2, rotAxis);
+            ofVec2f result1 = direction1.getRotatedRad(PI/2, rotAxis);
             stroke.addVertex(vertex + result1 * strokeWidth);
             float arcBegin = atan2(result1.y, result1.x) * RAD_TO_DEG;
             result1 = direction2.getRotatedRad(PI/2, rotAxis);
@@ -318,7 +317,7 @@ void Polygon::buildStroke(){
     ofTessellator().tessellateToMesh(stroke, OF_POLY_WINDING_ODD, strokeMesh, true);
 }
 
-float Polygon::determinant(const ofVec3f dir1, const ofVec3f dir2){
+float Polygon::determinant(const ofVec2f& dir1, const ofVec2f& dir2){
     static const float epsilon = 1e-5;
     float result = dir1.x * dir2.y - dir1.y * dir2.x;
     if (abs(result) <= epsilon){

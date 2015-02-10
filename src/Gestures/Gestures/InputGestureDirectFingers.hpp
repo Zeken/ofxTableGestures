@@ -36,7 +36,7 @@
 #include "InputGestureBasicFingers.hpp"
 #include <map>
 
-class DirectFinger : public ofVec3f{
+class DirectFinger : public ofVec2f{
     public:
         DirectFinger() : s_id(0), xspeed(0), yspeed(0), maccel(0) {}
         bool operator ==(const DirectFinger& rhs) const{

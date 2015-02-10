@@ -50,7 +50,7 @@ class Graphic : public EventClient{
         void setColor(const ofColor& iColor);
         ofColor& getColor();
 
-        void setPosition(const ofVec3f&, float angle = 0); // Angle is in degrees
+        void setPosition(const ofVec2f&, float angle = 0); // Angle is in degrees
         void setMatrix(ofMatrix4x4&);
         const ofMatrix4x4& getMatrix();
         void ignoreMatrixStack(bool);

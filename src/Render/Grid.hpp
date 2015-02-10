@@ -56,7 +56,7 @@ class Grid : public Graphic{
         static const float center;
         static const float baseSize;
         static const ofColor arrowsColor;
-        static const ofVec3f scaleArrowVerts[9];
+        static const ofVec2f scaleArrowVerts[9];
 
         void generateGrid();
         void arrows_translate();

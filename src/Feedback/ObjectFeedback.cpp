@@ -68,7 +68,7 @@ void ObjectFeedback::update() {
          it++){
         objectGraphic& obj = *it;
         ofMatrix4x4 matrix = obj.graphic->getMatrix();
-        ofVec3f scale = matrix.getScale() * 0.75f;
+        ofVec2f scale = matrix.getScale() * 0.75f;
         float angle = obj.object->orientation * 180/PI;
         matrix.setRotate(ofQuaternion(angle, ofVec3f(0, 0, 1)));
         matrix.setTranslation(obj.object->x, obj.object->y, 0);

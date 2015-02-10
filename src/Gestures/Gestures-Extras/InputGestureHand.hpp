@@ -43,7 +43,7 @@ class InputGestureHands;
 class Hand : public DirectFinger
 {
 private:
-    ofVec3f getCenter();
+    ofVec2f getCenter();
     bool isValid();
     float getRadius();
 protected:
@@ -52,7 +52,7 @@ protected:
     void UpdateExposedInfo()
     {
         center = getCenter();
-        ofVec3f nc = center + offset;
+        ofVec2f nc = center + offset;
         set(nc.x,nc.y);
         is_valid = isValid();
         radius = getRadius();
@@ -60,7 +60,7 @@ protected:
     }
     void UpdateOffset()
     {
-        ofVec3f pc(x,y);
+        ofVec2f pc(x,y);
         UpdateExposedInfo();
         offset = pc - center;
     }
@@ -77,8 +77,8 @@ public:
     bool is_valid;
     float radius;
     unsigned int population;
-    ofVec3f center;
-    ofVec3f offset;
+    ofVec2f center;
+    ofVec2f offset;
 };
 
 
@@ -89,7 +89,7 @@ class InputGestureHands : public EventClient
     
     std::map<int,Hand*> assignations;
     std::list<Hand *> hands;
-    Hand * getNeighbour(ofVec3f * p, Hand * ignore = NULL);
+    Hand * getNeighbour(ofVec2f * p, Hand * ignore = NULL);
     float & HAND_MAX_RADIUS;
 public:
 

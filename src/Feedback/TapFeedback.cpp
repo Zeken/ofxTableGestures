@@ -14,13 +14,13 @@ void TapFeedback::Tap(InputGestureTap::TapArgs & args){
     }
 
     // Create new tap
-    CircleTap* newTap = new CircleTap(ofVec3f(args.x, args.y), maxradius, lifetime);
+    CircleTap* newTap = new CircleTap(ofVec2f(args.x, args.y), maxradius, lifetime);
     taps.push(newTap);
 }
 
 
 // CircleTap subclass //////////
-TapFeedback::CircleTap::CircleTap(const ofVec3f& dp, float r, float lt) :
+TapFeedback::CircleTap::CircleTap(const ofVec2f& dp, float r, float lt) :
     born(ofGetElapsedTimef()),
     lifetime(lt),
     maxradius(r),

@@ -49,7 +49,7 @@ class InputGestureTap : public EventClient{
     private:
         float & maxdistance;
         float & maxtime;
-        std::map< DirectFinger *, std::pair < ofVec3f , float > > previous;
+        std::map< DirectFinger *, std::pair < ofVec2f , float > > previous;
 };
 
 //template<class Base>

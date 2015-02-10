@@ -54,7 +54,7 @@ class InputGestureLongPush : public EventClient{
     private:
         float & maxdistance;
         float & mintime;
-        std::map< DirectFinger *,  std::pair < ofVec3f , float > > previous;
+        std::map< DirectFinger *,  std::pair < ofVec2f , float > > previous;
 };
 
 template<class Base>

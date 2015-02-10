@@ -40,16 +40,16 @@ const float Grid::center = 0.5f;
 const float Grid::baseSize = 0.1f;
 const ofColor Grid::arrowsColor(255, 0, 0, 230);
 
-const ofVec3f Grid::scaleArrowVerts[9] = { \
-                    ofVec3f(-baseSize, -baseSize/8, 0), \
-                    ofVec3f(-baseSize, baseSize/8, 0),  \
-                    ofVec3f(0, baseSize/4, 0),    \
-                    ofVec3f(-baseSize, -baseSize/8, 0), \
-                    ofVec3f(0, baseSize/4, 0),    \
-                    ofVec3f(0, -baseSize/4, 0),    \
-                    ofVec3f(0, -baseSize/2, 0),   \
-                    ofVec3f(0, baseSize/2, 0),    \
-                    ofVec3f(baseSize, 0, 0)       \
+const ofVec2f Grid::scaleArrowVerts[9] = { \
+                    ofVec2f(-baseSize, -baseSize/8), \
+                    ofVec2f(-baseSize, baseSize/8),  \
+                    ofVec2f(0, baseSize/4),    \
+                    ofVec2f(-baseSize, -baseSize/8), \
+                    ofVec2f(0, baseSize/4),    \
+                    ofVec2f(0, -baseSize/4),    \
+                    ofVec2f(0, -baseSize/2),   \
+                    ofVec2f(0, baseSize/2),    \
+                    ofVec2f(baseSize, 0)       \
 };
 
 Grid::Grid(int _w_lines, int _h_lines) :

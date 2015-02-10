@@ -45,11 +45,11 @@ class LongPushFeedback : public CanLongPush < Graphic >
         float born;
         float lifetime;
         float maxradius;
-        ofVec3f p;
+        ofVec2f p;
 
         public:
 
-        CircleTap(const ofVec3f& dp, float r, float lt):
+        CircleTap(const ofVec2f& dp, float r, float lt):
             born(ofGetElapsedTimef()),
             lifetime(lt),
             maxradius(r),
@@ -87,7 +87,7 @@ class LongPushFeedback : public CanLongPush < Graphic >
 
     void LongPushTriger(float x, float y)
     {
-        new CircleTap(ofVec3f(x,y),maxradius,lifetime);
+        new CircleTap(ofVec2f(x,y),maxradius,lifetime);
     }
 };
 
